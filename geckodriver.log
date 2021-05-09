@@ -1,0 +1,11 @@
+1620394441691	geckodriver	INFO	Listening on 127.0.0.1:5656
+1620394444496	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\Jimmy-X\\AppData\\Local\\Temp\\rust_mozprofileOlf8dP"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1620394447185	Marionette	INFO	Listening on port 5664
+1620394447674	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://webresource.c-ctrip.com/code/ubt/fp-em9.js, line 115: asm.js type error: arguments to a comparison must both be signed, unsigned, floats or doubles; double and fixnum are given
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 125: Error: Invalid autocomplete selectedIndex
+JavaScript error: resource://gre/modules/LoginManagerChild.jsm, line 190: NS_ERROR_XPC_JAVASCRIPT_ERROR_WITH_DETAILS: [JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]'[JavaScript Error: "Invalid autocomplete selectedIndex" {file: "resource://gre/actors/AutoCompleteChild.jsm" line: 125}]' when calling method: [nsIAutoCompletePopup::selectedIndex]
+JavaScript error: https://captcha.gtimg.com/public/2/tdc_iframe.html, line 10: NS_ERROR_FAILURE: 
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
