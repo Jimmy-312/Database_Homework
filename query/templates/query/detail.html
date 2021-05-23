@@ -2,9 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>query_detail</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css">
+    <title>{{ title }}标注查询</title>
 </head>
-<body>
+<body style="padding-top: 70px">
+<nav class="navbar navbar-inverse navbar-fixed-top ">
+    <div class="container navbar-left">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">医疗管理系统</a>
+            <!--<p class="navbar-text">患者信息查询</p>-->
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/query_patient/">患者信息查询<span class="sr-only">(current)</span></a></li>
+                <li class="dropdown active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">标注记录查询 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/query_detail/">疾病标注</a></li>
+                    <li><a href="/query_adetail/">解剖标注</a></li>
+                </ul>
+                </li>
+            </ul>
+            </div>
+    </div>
+</nav>
+
 <h1>{{ title }}标注查询</h1>
 
 
@@ -22,11 +44,11 @@
         {% csrf_token %}
         <p>
             <label for="id_patient">请输入病人ID</label>
-            <input type="text" id="id_patient" name="pid" placeholder="病人ID" value='{{ id }}'>
+            <input type="text" id="id_patient" name="pid" placeholder="病人ID" value='{{ obj.pid }}'>
         </p>
         <p>
             <label for="doctor">请输入标注的医生</label>
-            <input type="text" id="doctor_name" list="type_list" name='doctor_name' value='{{doctor}}' placeholder="医生姓名">
+            <input type="text" id="doctor_name" list="type_list" name='doctor_name' value='{{obj.doctor_name}}' placeholder="医生姓名">
             <datalist id="type_list">
                 <option>陈飞</option>
                 <option>胡伟玲</option>
@@ -51,18 +73,18 @@
         {% if title == '疾病' %}
         <p>
             <label for="illness_type">请输入疾病类型</label>
-            <input type="text" id="illness_type" name="da_type" value="{{da_type}}" placeholder="疾病类型">
+            <input type="text" id="illness_type" name="da_type" value="{{obj.da_type}}" placeholder="疾病类型">
         </p>
         {% endif %}
         {% if title == '解剖' %}
         <p>
             <label for="a_type">请输入解剖位置</label>
-            <input type="text" id="aill_type" name="da_type" value="{{da_type}}" placeholder="位置类型">
+            <input type="text" id="aill_type" name="da_type" value="{{obj.da_type}}" placeholder="位置类型">
         </p>
         {% endif %}
         <p>
             <label for="illness">请选择标注类型</label>
-            <input type="text" id="type" list="bztype" name='bztype' value="{{bz_type}}" placeholder="标注类型">
+            <input type="text" id="type" list="bztype" name='bztype' value="{{obj.bztype}}" placeholder="标注类型">
             <datalist id="bztype">
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
@@ -76,7 +98,7 @@
 <p>共查询到{{counter}}条符合条件的数据</p>
 {% endif %}
 {% if data %}
-<table border="1">
+<table class="table table-hover" border="1">
     <tr>
         <td>ImageID</td>
         <td>Type</td>
@@ -86,7 +108,7 @@
         <td>{{title}}类型</td>
         <td>ImagePath</td>
         {% if title == '疾病' %}
-        <td>一致性检验（个人觉得没啥用，为了应对实验要求）</td>
+        <td>一致性检验<s>个人觉得没啥用，为了应对实验要求</s></td>
         {% endif %}
     </tr> 
 {% for iid,itype,idoc,pid,pname,dname,imgpath,yzx in data %}
@@ -105,3 +127,7 @@
 {% endfor %}
 </table>
 {% endif%}
+<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,28 +1,29 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from . import models
-from django.http import HttpResponse,JsonResponse
-import pymysql
+from django.forms import Form
 from datetime import datetime
 
 # Create your views here.
 def index(request):
+    print(123)
     return render(request,'query/index.html')
 
 def query_patient(request):
     if request.method=='POST':
-        pid = request.POST.get("patientid")
-        datefrom = request.POST.get("datefrom")
-        dateto = request.POST.get("dateto")
-        bz_type = request.POST.get("ill_bztype")
-        jp_type = request.POST.get("jp_type")
-        ill_type = request.POST.get("ill_type")
-        aill_type = request.POST.get("aill_type")
-        ddoctor = request.POST.get("doctor_name")
-        adoctor = request.POST.get("doctor_a")
-        pages = request.POST.get("ages")
-        pagee = request.POST.get("agee")
-        psex = request.POST.get("sex")
-        hospital = request.POST.get("hospital")
+        obj = request.POST
+        pid = obj.get("patientid")
+        datefrom = obj.get("datefrom")
+        dateto = obj.get("dateto")
+        bz_type = obj.get("ill_bztype")
+        jp_type = obj.get("jp_type")
+        ill_type = obj.get("ill_type")
+        aill_type = obj.get("aill_type")
+        ddoctor = obj.get("doctor_name")
+        adoctor = obj.get("doctor_a")
+        pages = obj.get("ages")
+        pagee = obj.get("agee")
+        psex = obj.get("sex")
+        hospital = obj.get("hospital")
 
         patient_list=[]
         datefrom = datefrom if datefrom.strip() else "1990-01-01"
@@ -42,7 +43,7 @@ def query_patient(request):
         except:
             aill = ''
         area_a = [i.areaid for i in models.AArearoi.objects.filter(anatomyid__contains=aill)]
-        #print(ill)
+
         try:
             hos = models.HospitalRecord.objects.get(institutename=hospital).instituteid
         except:
@@ -88,7 +89,7 @@ def query_patient(request):
                 patientids=list(set([i for i in patientids_d if i in patientids_a]))
             users = users.filter(patientid__in=patientids)
         
-        users = users if pid == '' else users.filter(id=pid)    
+        users = users if not pid.strip() else users.filter(id=pid)    
         users = list(users)
         for i in users:
             u_hos = models.HospitalRecord.objects.get(instituteid=i.hospitalid).institutename
@@ -99,8 +100,7 @@ def query_patient(request):
 
         usernum = len(users)
         print(usernum)#,len(patientids_a),len(patientids_d))
-        content = {'patient_id':patient_list ,'patient_num':str(usernum),'pid':pid,'date_from':datefrom,'date_to':dateto,'bz_type':bz_type,'jp_type':\
-            jp_type,'ill_type':ill_type,'ddoctor':ddoctor,'pages':pages,'pagee':pagee,'psex':psex,'hospital':hospital,'adoctor':adoctor,'aill_type':aill_type}
+        content = {'patient_id':patient_list ,'patient_num':str(usernum),'obj':obj}
         return render(request,'query/query_patient.html',content) 
     else:
         return render(request,'query/query_patient.html')
@@ -108,11 +108,12 @@ def query_patient(request):
 
 def query_detail(request):
     if request.method == 'POST':
-        id = request.POST.get('pid')
+        obj = request.POST
+        id = obj.get('pid')
         #img_id = request.POST.get('img_id')
-        dtype = request.POST.get('bztype')
-        doctor = request.POST.get('doctor_name')
-        datype = request.POST.get('da_type')
+        dtype = obj.get('bztype')
+        doctor = obj.get('doctor_name')
+        datype = obj.get('da_type')
 
         try:
             daid = models.Diseasedict.objects.get(diseasename=datype).diseaseid
@@ -149,16 +150,17 @@ def query_detail(request):
 
         num = str(len(image_list))
         print(name,num)
-        return render(request,'query/detail.html',{'id':id,'name':name,'doctor':doctor,'bz_type':dtype,'data':image_list,'counter':num,'title':'疾病','da_type':datype})
+        return render(request,'query/detail.html',{'data':image_list,'counter':num,'title':'疾病','obj':obj,'name':name})
     return render(request,'query/detail.html',{'title':'疾病'})
 
 def query_adetail(request):
     if request.method == 'POST':
-        id = request.POST.get('pid')
+        obj = request.POST
+        id = obj.get('pid')
         #img_id = request.POST.get('img_id')
-        dtype = request.POST.get('bztype')
-        doctor = request.POST.get('doctor_name')
-        datype = request.POST.get('da_type')
+        dtype = obj.get('bztype')
+        doctor = obj.get('doctor_name')
+        datype = obj.get('da_type')
 
         try:
             daid = models.Anatomydict.objects.get(anatomyname=datype).anatomyid
@@ -190,6 +192,6 @@ def query_adetail(request):
 
         num = str(len(image_list))
         print(name,num)
-        return render(request,'query/detail.html',{'id':id,'name':name,'doctor':doctor,'bz_type':dtype,'data':image_list,'counter':num,'title':'解剖','ati':'a','da_type':datype})
+        return render(request,'query/detail.html',{'name':name,'data':image_list,'counter':num,'title':'解剖','ati':'a','obj':obj})
     return render(request,'query/detail.html',{'title':'解剖','ati':'a'})
     
