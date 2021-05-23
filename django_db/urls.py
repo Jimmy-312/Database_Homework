@@ -23,5 +23,7 @@ urlpatterns = [
     path('query_patient/',query_patient),
     path('query_detail/',query_detail),
     path('query_adetail/',query_adetail),
+    path('main/',mainpage),
+    path('patient_add/',patient_add),
     
 ]

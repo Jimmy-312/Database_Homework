@@ -7,15 +7,44 @@ from datetime import datetime
 def index(request):
     if request.method=='POST':
         obj = request.POST
-        user = obj.get("user")
-        pwd = obj.get("pwd")
+        st = obj.get("st")
+        if st=='l':
+            user = obj.get("user")
+            if user==None:
+                return render(request,'query/index.html',{"obj":obj,"st":"l"})
+            pwd = obj.get("pwd")
 
-        state = models.User.objects.filter(userid=user,password=pwd)
-        if len(state)==0:
-            return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误，请重试"})
+            state = models.User.objects.filter(userid__exact=user,password__exact=pwd)
+            if len(state)==0:
+                return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误，请重试","st":"l"})
+            else:
+                return render(request,'query/query_patient.html')
         else:
-            return render(request,'query/query_patient.html')
-    return render(request,'query/index.html')
+            user = obj.get("user")
+            if user==None:
+                return render(request,'query/index.html',{"obj":obj,"st":"r"})
+            pwd = obj.get("pwd")
+            sex = obj.get("sex")
+            age = obj.get("age")
+            name = obj.get("name")
+            dep = obj.get("dep")
+            hos = obj.get("hos")
+
+            hosid = models.HospitalRecord.objects.filter(institutename=hos)
+            state = models.User.objects.filter(userid__exact=user)
+            if len(state)!=0:
+                return render(request,'query/index.html',{"obj":obj,"error":"用户名重复，请重试！","st":"r"})
+            elif len(hosid)==0:
+                return render(request,'query/index.html',{"obj":obj,"error":"医院未涵盖，请重试！","st":"r"})
+            else:
+                models.User.objects.create(userid=user,password=pwd,age=age,departmentid=dep,username=name,gender=sex,hospitalid=hosid[0].instituteid)
+                return render(request,'query/index.html',{"tip":"注册成功,请登录!","st":"l"})
+
+
+    return render(request,'query/index.html',{"st":"l"})
+
+def mainpage(request):
+    return render(request,'query/main.html')
 
 def query_patient(request):
     if request.method=='POST':
@@ -114,6 +143,12 @@ def query_patient(request):
     else:
         return render(request,'query/query_patient.html')
 
+def patient_add(request):
+    if request.method == 'POST':
+        obj = request.POST
+        name = obj.get("name")
+        return render(request,"query/query_patient.html",{"tip":"新增成功！"})
+    return render(request,"query/query_patient.html")
 
 def query_detail(request):
     if request.method == 'POST':

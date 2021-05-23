@@ -9,13 +9,13 @@
 <nav class="navbar navbar-inverse navbar-fixed-top ">
     <div class="container navbar-left">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">医疗管理系统</a>
-            <!--<p class="navbar-text">患者信息查询</p>-->
+            <a class="navbar-brand" href="">医疗管理系统</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">登录</a></li>
-                <li><a href="#">注册</a></li>
+                <li {% if st == 'l' %} class="active"{%endif%}><a href={%if st == 'l' %}"#" {%else%} "javascript:document.form1.submit();" {%endif%}>登录</a></li>
+                <li {%if st == 'r' %} class="active"{%endif%}><a href={%if st == 'r' %}"#" {%else%} "javascript:document.form1.submit();" {%endif%}>注册</a></li>
+                <form name="form1" action="" method="POST">{% csrf_token %}<input type="hidden" value={%if st == 'l'%}"r"{%else%}"l"{%endif%} name="st"></form>
             </ul>
         </div>
     </div>
@@ -52,8 +52,56 @@
         <p>{{error}}</p>
     </div> 
     {%endif%}
-    <div class="panel panel-default" style="width: 420px;height: 320px;margin:0 auto;">
-        <div class="panel-heading">登录</div>
+    {%if tip%}
+    <div class="alert alert-success" style="margin:0.5% 1.5% 1% 1.5%;text-align: center;" role="alert"> 
+        <p>{{tip}}</p>
+    </div> 
+    {%endif%}
+        {%if st == 'r'%}
+        <div class="panel panel-default" style="width: 420px;height: 550px;margin:0 auto;">
+            <div class="panel-heading">注册</div>
+        <div class="panel-body" style="text-align: center;margin-top: 5%;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="user">用户名：</label>
+                    <input type="text" id="user" name="user" placeholder="输入用户名" value="{{obj.user}}" required>
+                </p> <br>  
+                <p>
+                    <label for="pwd">密&nbsp&nbsp&nbsp&nbsp码：</label>
+                    <input type="password" id="pwd" name="pwd" placeholder="输入密码" value='' required>
+                </p><br> 
+                <p>
+                    <label for="name">名&nbsp&nbsp&nbsp&nbsp字：</label>
+                    <input type="text" id="name" name="name" placeholder="输入你的名字" value='{{obj.name}}' required>
+                </p><br> 
+                <p>
+                    <label>性&nbsp&nbsp&nbsp&nbsp别：</label>
+                    <select id="sex" name="sex" style="width: 185px;height: 25px;">
+                        <option>男</option>
+                        <option>女</option>
+                    </select>
+                </p><br> 
+                <p>
+                    <label for="age">年&nbsp&nbsp&nbsp&nbsp龄：</label>
+                    <input type="number" id="age" name="age" min=0 max=120 value='{{obj.age}}' style="width: 185px;" required>
+                </p><br> 
+                <p>
+                    <label for="hos">医&nbsp&nbsp&nbsp&nbsp院：</label>
+                    <input type="text" id="hos" name="hos" placeholder="输入所在医院" list="hos_list" value='{{obj.hos}}' required>
+                </p> <br> 
+                <p>
+                    <label for="pwd">科&nbsp&nbsp&nbsp&nbsp室：</label>
+                    <input type="text" id="dep" name="dep" placeholder="输入所在科室" value='{{obj.dep}}' required>
+                </p>      
+                <br>
+                <input type="hidden" value="r" name="st">
+                <input class="btn btn-default" type="submit" style="width: 60%;" value="注册">
+            </form>
+        </div>
+        {%else%}
+        <div class="panel panel-default" style="width: 420px;height: 320px;margin:0 auto;">
+            <div class="panel-heading">登录</div>
         <div class="panel-body" style="text-align: center;margin-top: 10%;">
         <form action="" method="post">
             {% csrf_token %}
@@ -65,11 +113,38 @@
                 <label for="pwd">密&nbsp&nbsp&nbsp&nbsp码：</label>
                 <input type="password" id="pwd" name="pwd" placeholder="输入密码" value='' required>
             </p>    <br><br>
+            <input type="hidden" value="l" name="st">
             <input class="btn btn-default" type="submit" style="width: 60%;" value="登录">
         </form>
         </div>
+        {%endif%}
 </div>
-
+<datalist id="hos_list">
+    <option>邵逸夫医院</option>
+    <option>浙江大学医学院第二附属医院</option>
+    <option>宁波大学附属医院</option>
+    <option>上虞人民医院</option>
+    <option>浙江省中医院</option>
+    <option>杭州市第一人民医院</option>
+    <option>台州医院</option>
+    <option>丽水中心医院</option>
+    <option>余姚人民医院</option>
+    <option>宁波李惠利东部医院</option>
+    <option>瑞安人民医院</option>
+    <option>福建省立医院</option>
+    <option>德清医院</option>
+    <option>丽水人民医院</option>
+    <option>山西省人民医院</option>
+    <option>湖州人民医院</option>
+    <option>安贞医院</option>
+    <option>嘉兴市第一医院</option>
+    <option>西安市中心医院</option>
+    <option>龙游县人民医院</option>
+    <option>兰州二院</option>
+    <option>金华市中心医院</option>
+    <option>上海市肿瘤医院宁波病理中心</option>
+    <option>乐清人民医院</option>
+</datalist>
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
 </body>
