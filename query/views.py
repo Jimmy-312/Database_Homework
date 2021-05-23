@@ -5,7 +5,16 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-    print(123)
+    if request.method=='POST':
+        obj = request.POST
+        user = obj.get("user")
+        pwd = obj.get("pwd")
+
+        state = models.User.objects.filter(userid=user,password=pwd)
+        if len(state)==0:
+            return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误，请重试"})
+        else:
+            return render(request,'query/query_patient.html')
     return render(request,'query/index.html')
 
 def query_patient(request):

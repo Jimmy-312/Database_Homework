@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css">
     <title>{{ title }}标注查询</title>
 </head>
-<body style="padding-top: 70px">
+<body style="padding-top: 70px;padding-bottom: 70px">
 <nav class="navbar navbar-inverse navbar-fixed-top ">
     <div class="container navbar-left">
         <div class="navbar-header">
@@ -14,7 +14,7 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/query_patient/">患者信息查询<span class="sr-only">(current)</span></a></li>
+                <li><a href="/query_patient/">患者信息查询</a></li>
                 <li class="dropdown active">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">标注记录查询 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -26,21 +26,71 @@
             </div>
     </div>
 </nav>
-
-<h1>{{ title }}标注查询</h1>
-
-
+<nav class="navbar navbar-inverse navbar-fixed-bottom ">
+    <div class="container navbar-left" style="width: 45%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#"><em>Powered By</em></a></li>
+                <li><a href="https://www.djangoproject.com/">Django</a></li>
+                <li><a href="https://v3.bootcss.com/">Bootstrap V3</Var></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container navbar-left" style="width: 15%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li><a href="#">2021 Created by Jimmy</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container navbar-right" style="width: 8%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+            <ul class="nav navbar-nav">
+                <li><a href="/">联系我</a></li>
+            </ul>
+        </div>
+    </div>
+</nav><nav class="navbar navbar-inverse navbar-fixed-bottom ">
+    <div class="container navbar-left" style="width: 45%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#"><em>Powered By</em></a></li>
+                <li><a href="https://www.djangoproject.com/">Django</a></li>
+                <li><a href="https://v3.bootcss.com/">Bootstrap V3</Var></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container navbar-left" style="width: 15%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav">
+                <li><a href="#">2021 Created by Jimmy</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container navbar-right" style="width: 8%;">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+            <ul class="nav navbar-nav">
+                <li><a href="/">联系我</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 {% if error%}
-{{error}}
+<div class="alert alert-danger" style="margin:0.5% 1.5% 1% 1.5%;" role="alert"> 
+    <p>{{error}}</p>
+</div> 
 {% endif%}
 
-{% if name%}
-<h2>{{ name }}</h2>
-{% endif %}
 
-<div style="margin:15%,40%">
-    <form action="/query_{{ati}}detail/" method="post">
+
+<div class="container-fluid">
+    <div class="col-md-4">
+    <div class="panel panel-default" style="width: 500px;height: 320px;">
+        <div class="panel-heading">{{ title }}标注条件筛选</div>
+        <div class="panel-body">
+            <p class="lead">{% if name%} {{ name }} {% else %}未指定患者{% endif %}</p>
+        <form action="/query_{{ati}}detail/" method="post">
         {% csrf_token %}
         <p>
             <label for="id_patient">请输入病人ID</label>
@@ -91,13 +141,22 @@
                 <option value="HAND">Hand</option>
             </datalist>
         </p>
-        <input type="submit" value="查询">
+        <input class="btn btn-default" style="margin-top: 5px;" {%if error%}disabled="disabled"{%endif%} type="submit" value="查询">
     </form>
+    </div>
+    </div>
 </div>
+</div>
+
 {% if counter%}
-<p>共查询到{{counter}}条符合条件的数据</p>
+<div class="alert alert-success" style="margin:0.5% 1.5% 1% 1.5%;" role="alert"> 
+    <p>共查询到{{counter}}条符合条件的数据</p>
+</div> 
 {% endif %}
+
+
 {% if data %}
+<div style="margin-left:1.5%;margin-right: 1.5%;">
 <table class="table table-hover" border="1">
     <tr>
         <td>ImageID</td>
@@ -126,7 +185,10 @@
     </tr> 
 {% endfor %}
 </table>
+</div>
 {% endif%}
+
+
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
 </body>

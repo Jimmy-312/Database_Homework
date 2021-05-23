@@ -146,8 +146,8 @@ class DLabeledimage(models.Model):
 
 class Diseasedict(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    diseasename = models.CharField(db_column='DiseaseName', max_length=45)  # Field name made lowercase.
     diseaseid = models.CharField(db_column='DiseaseID', max_length=45)  # Field name made lowercase.
+    diseasename = models.CharField(db_column='DiseaseName', max_length=45)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -226,7 +226,7 @@ class Patientbasicinfos(models.Model):
     patientid = models.CharField(db_column='PatientID', max_length=15)  # Field name made lowercase.
     patientname = models.CharField(db_column='PatientName', max_length=25, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='Gender', max_length=25, blank=True, null=True)  # Field name made lowercase.
-    age = models.CharField(db_column='Age', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    age = models.IntegerField(db_column='Age', blank=True, null=True)  # Field name made lowercase.
     clinicaldiagnosis = models.CharField(db_column='ClinicalDiagnosis', max_length=4000, blank=True, null=True)  # Field name made lowercase.
     examinationfindings = models.CharField(db_column='ExaminationFindings', max_length=4000, blank=True, null=True)  # Field name made lowercase.
     endoscopicdiagnosis = models.CharField(db_column='EndoscopicDiagnosis', max_length=4000, blank=True, null=True)  # Field name made lowercase.
@@ -247,6 +247,7 @@ class User(models.Model):
     username = models.CharField(db_column='UserName', max_length=10, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='Gender', max_length=10, blank=True, null=True)  # Field name made lowercase.
     age = models.CharField(db_column='Age', max_length=4, blank=True, null=True)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
 
     class Meta:
         managed = False
