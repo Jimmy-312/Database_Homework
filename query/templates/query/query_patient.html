@@ -251,13 +251,13 @@
                 {% csrf_token %}
                 <p>
                     <label for="user">患者姓名：</label>
-                    <input type="text" id="name_add" name="name" placeholder="输入患者姓名" value="" required>
+                    <input type="text" id="name_add" name="name" placeholder="输入患者姓名" value="" style="width: 150px;" required>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>检查日期：</label>
                     <input type="date" id="date_add" name="date" required>
                 </p>
                 <p>
                     <label for="sex_add">患者性别：</label>
-                    <select id="sex_add" name="sex" style="width: 185px;height: 25px;">
+                    <select id="sex_add" name="sex" style="width: 150px;height: 25px;">
                         <option>男</option>
                         <option>女</option>
                     </select>
@@ -266,13 +266,13 @@
                 </p>
                 <p>
                     <label for="age_add">患者年龄：</label>
-                    <input type="number" id="age_add" name="age" placeholder="输入患者姓名" value="" required>
+                    <input type="number" id="age_add" name="age" placeholder="输入患者姓名" style="width: 150px;" value="" required>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人编号：</label>
                     <input type="text" id="patientid_add" name="patientid" placeholder="输入病人编号" style="width: 150px;" required>
                 </p>
                 <p>
                     <label for="hos_add">就诊医院：</label>
-                    <input type="text" id="hos_add" placeholder="输入患者姓名" name="hos" list="hos_list" value="" required>
+                    <input type="text" id="hos_add" placeholder="输入患者姓名" name="hos" list="hos_list" value="" style="width: 150px;" required>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人&nbsp;&nbsp;&nbsp;&nbsp;ID：</label>
                     <input type="text" id="id_add" placeholder="不填自动生成" name="id" style="width: 150px;">
                 </p>
