@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from . import models
-from django.forms import Form
+import json
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 
 # Create your views here.
@@ -73,19 +75,19 @@ def query_patient(request):
         try:
             ill = models.Diseasedict.objects.get(diseasename=ill_type).diseaseid
         except:
-            ill = ''
+            ill = '-' if ill_type.strip() else ''
         area_d = [i.areaid for i in models.DArearoi.objects.filter(diseaseid__contains=ill)]
 
         try:
             aill = models.Anatomydict.objects.get(anatomyname=aill_type).anatomyid
         except:
-            aill = ''
+            aill = '-' if aill_type.strip() else ''
         area_a = [i.areaid for i in models.AArearoi.objects.filter(anatomyid__contains=aill)]
 
         try:
             hos = models.HospitalRecord.objects.get(institutename=hospital).instituteid
         except:
-            hos = '' 
+            hos = '-' if hospital.strip() else ''
 
         try:
             user_d = models.User.objects.get(username=ddoctor)
@@ -143,12 +145,13 @@ def query_patient(request):
     else:
         return render(request,'query/query_patient.html')
 
+@csrf_exempt
 def patient_add(request):
     if request.method == 'POST':
         obj = request.POST
         name = obj.get("name")
-        return render(request,"query/query_patient.html",{"tip":"新增成功！"})
-    return render(request,"query/query_patient.html")
+        data = {"tip":f"成功添加患者{name}！","class":"success"}
+        return HttpResponse(json.dumps(data))
 
 def query_detail(request):
     if request.method == 'POST':
@@ -162,7 +165,7 @@ def query_detail(request):
         try:
             daid = models.Diseasedict.objects.get(diseasename=datype).diseaseid
         except:
-            daid = ''
+            daid = '-' if datype.strip() else ''
         areaid = [i.areaid for i in models.DArearoi.objects.filter(diseaseid__contains=daid)]
 
         pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
@@ -209,7 +212,7 @@ def query_adetail(request):
         try:
             daid = models.Anatomydict.objects.get(anatomyname=datype).anatomyid
         except:
-            daid = ''
+            daid = '-' if datype.strip() else ''
         areaid = [i.areaid for i in models.AArearoi.objects.filter(anatomyid__contains=daid)]
 
         pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
