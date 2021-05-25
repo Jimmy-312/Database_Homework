@@ -213,7 +213,7 @@
         </div>
     </div>
 </div>
-<div style="margin: 20px 45%">
+<div style="text-align: center;margin-top: 20px;">
 <input class="btn btn-default" type="submit" value="查询">
 </form>   
 <button class="btn btn-default" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">新增</button>
@@ -266,13 +266,13 @@
                 </p>
                 <p>
                     <label for="age_add">患者年龄：</label>
-                    <input type="number" id="age_add" name="age" placeholder="输入患者姓名" style="width: 150px;" value="" required>
+                    <input type="number" id="age_add" name="age" placeholder="输入患者年龄" max=120 min=0 style="width: 150px;" required>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人编号：</label>
                     <input type="text" id="patientid_add" name="patientid" placeholder="输入病人编号" style="width: 150px;" required>
                 </p>
                 <p>
                     <label for="hos_add">就诊医院：</label>
-                    <input type="text" id="hos_add" placeholder="输入患者姓名" name="hos" list="hos_list" value="" style="width: 150px;" required>
+                    <input type="text" id="hos_add" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 150px;" required>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人&nbsp;&nbsp;&nbsp;&nbsp;ID：</label>
                     <input type="text" id="id_add" placeholder="不填自动生成" name="id" style="width: 150px;">
                 </p>
@@ -296,6 +296,7 @@
             data:$('#add_form').serialize(),
             success: function(data){
                 data = JSON.parse(data)
+                $("#tip").attr("class","alert alert-"+data.class)
                 $("#tip").removeAttr("hidden")
                 $('#addpatient').modal('hide')
                 $("#tip_c").text(data.tip)
@@ -310,22 +311,26 @@
 <table class="table table-hover" border="1">
     <tr>
         <td>ID</td>
-        <td>Name</td>
-        <td>Gender</td>
-        <td>Age</td>
-        <td>Hospital</td>
-        <td>Check Date</td>
+        <td>病人编号</td>
+        <td>病人姓名</td>
+        <td>性别</td>
+        <td>年龄</td>
+        <td>所在医院</td>
+        <td>检查日期</td>
+        <td>检查编号</td>
         <td>疾病标记数量</td>
         <td>解剖标记数量</td>
     </tr>
-    {% for id,name,sex,age,hospital,check_date,d_num,a_num in patient_id %}
+    {% for id,name,sex,age,hospital,check_date,d_num,a_num,checkid,pa_id in patient_id %}
     <tr>
         <td>{{ id }}</td>
+        <td>{{ pa_id }}</td>
         <td>{{ name }}</td>
         <td>{{ sex }}</td>
         <td>{{ age }}</td>
         <td>{{ hospital }}</td>
         <td>{{ check_date }}</td>
+        <td>{{ checkid }}</td>
         <td>
             {{ d_num }}
             <a href='javascript:document.form{{ id }}.submit();'>查看</a>

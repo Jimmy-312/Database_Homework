@@ -135,7 +135,7 @@ def query_patient(request):
             u_hos = models.HospitalRecord.objects.get(instituteid=i.hospitalid).institutename
             d_num,a_num = dnum.get(i.patientid),anum.get(i.patientid)
             d_num,a_num = d_num if d_num!=None else 0 ,a_num if a_num!=None else 0
-            u_content = [i.id,i.patientname,i.gender,i.age,u_hos,i.checkdate,d_num,a_num]
+            u_content = [i.id,i.patientname,i.gender,i.age,u_hos,i.checkdate,d_num,a_num,i.checknumber,i.patientid]
             patient_list.append(u_content)
 
         usernum = len(users)
@@ -150,7 +150,40 @@ def patient_add(request):
     if request.method == 'POST':
         obj = request.POST
         name = obj.get("name")
-        data = {"tip":f"成功添加患者{name}！","class":"success"}
+        sex = obj.get("sex")
+        date = obj.get("date")
+        checkid = obj.get("checkid")
+        age = obj.get("age")
+        patientid = obj.get("patientid")
+        id = obj.get("id")
+        hos = obj.get("hos")
+  
+        if id.strip():
+            state = models.Patientbasicinfos.objects.filter(id__exact=id)
+            if len(state)!=0:
+                data = {"tip":"病人id重复！","class":"danger"}
+                return HttpResponse(json.dumps(data))
+        
+        state = models.Patientbasicinfos.objects.filter(patientid__exact=patientid)
+        if len(state)!=0:
+                data = {"tip":"病人编号重复！","class":"danger"}
+                return HttpResponse(json.dumps(data))
+        
+        hosid = models.HospitalRecord.objects.filter(institutename=hos)[0].instituteid
+        if len(hosid)==0:
+                data = {"tip":"医院未涵盖！","class":"danger"}
+                return HttpResponse(json.dumps(data))
+        
+        date = datetime.strptime(date,"%Y-%m-%d")
+        try:
+            if id.strip():
+                models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,id=id,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
+            else:
+                models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
+            data = {"tip":f"成功添加患者{name}！","class":"success"}
+        except:
+            data = {"tip":"添加失败，请重试！","class":"danger"}
+        
         return HttpResponse(json.dumps(data))
 
 def query_detail(request):
