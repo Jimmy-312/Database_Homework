@@ -4416,9 +4416,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     box-shadow: none;
   }
   .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-nav .open .dropdown-menu > li > p,
   .navbar-nav .open .dropdown-menu .dropdown-header {
     padding: 5px 15px 5px 25px;
   }
+  .navbar-nav .open .dropdown-menu > li > p,
   .navbar-nav .open .dropdown-menu > li > a {
     line-height: 20px;
   }

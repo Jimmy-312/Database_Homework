@@ -247,8 +247,6 @@ class User(models.Model):
     username = models.CharField(db_column='UserName', max_length=10, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='Gender', max_length=10, blank=True, null=True)  # Field name made lowercase.
     age = models.CharField(db_column='Age', max_length=4, blank=True, null=True)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
-
     class Meta:
         managed = False
         db_table = 'user'

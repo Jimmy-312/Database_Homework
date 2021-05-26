@@ -1,26 +1,31 @@
 from django.shortcuts import render
 from . import models
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
     if request.method=='POST':
         obj = request.POST
         st = obj.get("st")
+        next = request.GET.get('next', '/')
         if st=='l':
             user = obj.get("user")
             if user==None:
                 return render(request,'query/index.html',{"obj":obj,"st":"l"})
             pwd = obj.get("pwd")
-
-            state = models.User.objects.filter(userid__exact=user,password__exact=pwd)
-            if len(state)==0:
-                return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误，请重试","st":"l"})
+            logininfo = authenticate(username=user, password=pwd)
+            if logininfo != None:
+                login(request,logininfo)
+                return HttpResponseRedirect(next)
             else:
-                return render(request,'query/query_patient.html')
+                return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误！","st":"l"})
+            #print(request.user.is_authenticated)
         else:
             user = obj.get("user")
             if user==None:
@@ -39,15 +44,24 @@ def index(request):
             elif len(hosid)==0:
                 return render(request,'query/index.html',{"obj":obj,"error":"医院未涵盖，请重试！","st":"r"})
             else:
-                models.User.objects.create(userid=user,password=pwd,age=age,departmentid=dep,username=name,gender=sex,hospitalid=hosid[0].instituteid)
+                models.User.objects.create(userid=user,age=age,departmentid=dep,username=name,gender=sex,hospitalid=hosid[0].instituteid)
+                User.objects.create_user(username=user, password=pwd)
                 return render(request,'query/index.html',{"tip":"注册成功,请登录!","st":"l"})
+    else:
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/main/")
+        return render(request,'query/index.html',{"st":"l"})
 
+def logout_d(request):
+    logout(request)
+    return HttpResponseRedirect("/")
 
-    return render(request,'query/index.html',{"st":"l"})
-
+@login_required
 def mainpage(request):
-    return render(request,'query/main.html')
+    userid = request.user
+    return render(request,'query/main.html',{"user":userid})
 
+@login_required
 def query_patient(request):
     if request.method=='POST':
         obj = request.POST
@@ -146,6 +160,7 @@ def query_patient(request):
         return render(request,'query/query_patient.html')
 
 @csrf_exempt
+@login_required
 def patient_add(request):
     if request.method == 'POST':
         obj = request.POST
@@ -186,6 +201,7 @@ def patient_add(request):
         
         return HttpResponse(json.dumps(data))
 
+@login_required
 def query_detail(request):
     if request.method == 'POST':
         obj = request.POST
@@ -233,6 +249,7 @@ def query_detail(request):
         return render(request,'query/detail.html',{'data':image_list,'counter':num,'title':'疾病','obj':obj,'name':name})
     return render(request,'query/detail.html',{'title':'疾病'})
 
+@login_required
 def query_adetail(request):
     if request.method == 'POST':
         obj = request.POST
