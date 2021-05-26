@@ -85,6 +85,7 @@ def del_patient(request):
         patient = models.Patientbasicinfos.objects.get(id=pid)
         pid = patient.patientid
 
+@csrf_exempt
 @login_required
 def query_patient(request):
     if request.method=='POST':
@@ -173,13 +174,14 @@ def query_patient(request):
             u_hos = models.HospitalRecord.objects.get(instituteid=i.hospitalid).institutename
             d_num,a_num = dnum.get(i.patientid),anum.get(i.patientid)
             d_num,a_num = d_num if d_num!=None else 0 ,a_num if a_num!=None else 0
-            u_content = [i.id,i.patientname,i.gender,i.age,u_hos,i.checkdate,d_num,a_num,i.checknumber,i.patientid]
+            u_content = [i.id,i.patientid,i.patientname,i.gender,i.age,u_hos,datetime.strftime(i.checkdate,"%Y-%m-%d"),i.checknumber,d_num,a_num]
             patient_list.append(u_content)
 
         usernum = len(users)
         print(usernum)#,len(patientids_a),len(patientids_d))
-        content = {'patient_id':patient_list ,'patient_num':str(usernum),'obj':obj}
-        return render(request,'query/query_patient.html',content) 
+        box = "success" if usernum>0 else "warning"
+        data = {'patient_id':patient_list ,'patient_num':str(usernum),'obj':obj,"class":box}
+        return HttpResponse(json.dumps(data))
     else:
         return render(request,'query/query_patient.html')
 
@@ -192,7 +194,7 @@ def patient_add(request):
         date = obj.get("checkdate")
         checkid = obj.get("checkid")
         age = obj.get("age")
-        patientid = obj.get("patientid")
+        patientid = obj.get("pid")
         id = obj.get("id")
         hos = obj.get("hos")
 
@@ -230,6 +232,7 @@ def patient_add(request):
         
         return HttpResponse(json.dumps(data))
 
+@csrf_exempt
 @login_required
 def query_detail(request):
     if request.method == 'POST':
@@ -278,6 +281,7 @@ def query_detail(request):
         return render(request,'query/detail.html',{'data':image_list,'counter':num,'title':'疾病','obj':obj,'name':name})
     return render(request,'query/detail.html',{'title':'疾病'})
 
+@csrf_exempt
 @login_required
 def query_adetail(request):
     if request.method == 'POST':
