@@ -66,41 +66,42 @@
 
 <!--<h1 style="text-decoration: line-through;">去TMD的查询表单</h1>-->
 <div class="container-fluid" style="margin: 0 auto;">
-<form action="/query_patient/" method="post">
+<form action="/query_patient/" method="post" class="form-horizontal">
 <div class="col-md-4">
-<div class="panel panel-default" style="width: 480px;height: 320px;margin: 0 auto;">
+<div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
     <div class="panel-heading">基础条件</div>
     <div class="panel-body">
     
         {% csrf_token %}
-        <p>
-            <label for="id_patient">请输入病人ID</label>
-            <input type="text" id="id_patient" name="patientid" value="{{obj.patientid}}" placeholder="病人ID" autofocus>
-        </p>
-        <p>
-            <label for="sex">请选择患者性别</label>
-            <input type="text" id="sex" list="sex_list" name='sex' value="{{ obj.sex }}" placeholder="患者性别">
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="id_patient">病人ID</label>
+            <input class="form-control" style="width: 200px;" type="text" id="id_patient" name="patientid" value="{{obj.patientid}}" placeholder="请输入病人ID" autofocus>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="sex">患者性别</label>
+            <input class="form-control" style="width: 200px;" type="text" id="sex" list="sex_list" name='sex' value="{{ obj.sex }}" placeholder="请输入患者性别">
             <datalist id="sex_list">
                 <option>男</option>
                 <option>女</option>
             </datalist>
-        </p>
-        <p style="right:0%">
-            <label for="age">请选择患者年龄范围</label>
-            <input type="number" id="ages" name="ages" value={{obj.ages}} min=0 max=120 style="width: 50px;" placeholder="0"> ≤ 年龄 ≤ 
-            <input type="number" id="agee" name="agee" value={{obj.agee}} min=0 max=120 style="width: 50px;" placeholder="120">
-        </p>
-        <p>
-            <label for="check_date">请输入起始检查时间</label>
-            <input type="date" id="date_from" name="datefrom" value="{{obj.datefrom}}">
-        </p>
-        <p>
-            <label for="check_date">请输入结束检查时间</label>
-            <input type="date" id="date_to" name="dateto" value="{{obj.dateto}}">
-        </p>
-        <p>
-            <label for="hospital">请选择就诊医院</label>
-            <input type="text" id="hospital_name" list="hos_list" name='hospital' value="{{ obj.hospital }}" placeholder="医院名字">
+        </div>
+        <div class="form-group form-inline">
+            <label class="col-sm-4 control-label" for="age">患者年龄范围</label>
+            <input class="form-control" type="number" id="ages" name="ages" value={{obj.ages}} min=0 max=120 style="width: 65px;" placeholder="0">
+            &nbsp;&nbsp;≤&nbsp;年龄&nbsp;≤&nbsp;
+            <input class="form-control" type="number" id="agee" name="agee" value={{obj.agee}} min=0 max=120 style="width: 65px;" placeholder="120">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="check_date">起始检查时间</label>
+            <input class="form-control" style="width: 200px;" type="date" id="date_from" name="datefrom" value="{{obj.datefrom}}">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="check_date">结束检查时间</label>
+            <input class="form-control" style="width: 200px;" type="date" id="date_to" name="dateto" value="{{obj.dateto}}">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="hospital">就诊医院</label>
+            <input class="form-control" style="width: 200px;" type="text" id="hospital_name" list="hos_list" name='hospital' value="{{ obj.hospital }}" placeholder="请选择就诊医院">
             <datalist id="hos_list">
                 <option>邵逸夫医院</option>
                 <option>浙江大学医学院第二附属医院</option>
@@ -127,18 +128,18 @@
                 <option>上海市肿瘤医院宁波病理中心</option>
                 <option>乐清人民医院</option>
             </datalist>
-        </p>
+        </div>
     </div>
 </div>
 </div>
 <div class="col-md-4">
-        <div class="panel panel-default" style="width: 480px;height: 320px;margin: 0 auto;">
+        <div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
             <div class="panel-heading">高级条件</div>
-            <div class="panel-body">
+            <div class="panel-body" style="text-align: center;">
                 
-        <p>
-            <label for="doctor_name">请选择标注疾病的医生</label>
-            <input type="text" id="doctor_name" list="named_list" name='doctor_name' value="{{obj.doctor_name}}" placeholder="医生姓名">
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="doctor_name">标注疾病的医生</label>
+            <input class="form-control" style="width: 200px;" type="text" id="doctor_name" list="named_list" name='doctor_name' value="{{obj.doctor_name}}" placeholder="请选择医生姓名">
             <datalist id="named_list">
                 <option>陈飞</option>
                 <option>胡伟玲</option>
@@ -159,10 +160,10 @@
                 <option>杜平</option>
                 <option>张哲</option>
             </datalist>
-        </p>
-        <p>
-            <label for="doctor_a">请选择标注解剖的医生</label>
-            <input type="text" id="doctor_a" list="name_list" name='doctor_a' value="{{obj.doctor_a}}" placeholder="医生姓名">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="doctor_a">标注解剖的医生</label>
+            <input class="form-control" style="width: 200px;" type="text" id="doctor_a" list="name_list" name='doctor_a' value="{{obj.doctor_a}}" placeholder="请选择医生姓名">
             <datalist id="name_list">
                 <option>陈飞</option>
                 <option>胡伟玲</option>
@@ -183,39 +184,39 @@
                 <option>杜平</option>
                 <option>张哲</option>
             </datalist>
-        </p>
-        <p>
-            <label for="illness_type">请输入疾病类型</label>
-            <input type="text" id="illness_type" name="ill_type" value="{{obj.ill_type}}" placeholder="疾病类型">
-        </p>
-        <p>
-            <label for="a_type">请输入解剖位置</label>
-            <input type="text" id="aill_type" name="aill_type" value="{{obj.aill_type}}" placeholder="位置类型">
-        </p>
-        <p>
-            <label for="d_type">请选择疾病标注类型</label>
-            <input type="text" id="d_type" list="dtype_list" name='ill_bztype' value="{{obj.ill_bztype}}" placeholder="标注类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="illness_type">疾病类型</label>
+            <input class="form-control" style="width: 200px;" type="text" id="illness_type" name="ill_type" value="{{obj.ill_type}}" placeholder="请输入疾病类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="a_type">解剖位置</label>
+            <input class="form-control" style="width: 200px;" type="text" id="aill_type" name="aill_type" value="{{obj.aill_type}}" placeholder="请输入位置类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="d_type">疾病标注类型</label>
+            <input class="form-control" style="width: 200px;" type="text" id="d_type" list="dtype_list" name='ill_bztype' value="{{obj.ill_bztype}}" placeholder="请选择标注类型">
             <datalist id="dtype_list">
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
             </datalist>
-        </p>
-        <p>
-            <label for="a_type">请选择解剖标注类型</label>
-            <input type="text" id="a_type" list="atype_list" name='jp_type' value="{{obj.jp_type}}" placeholder="标注类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="a_type">解剖标注类型</label>
+            <input class="form-control" style="width: 200px;" type="text" id="a_type" list="atype_list" name='jp_type' value="{{obj.jp_type}}" placeholder="请选择标注类型">
             <datalist id="atype_list">
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
             </datalist>
-        </p>
+        </div>
         <small><em>快速建立“查看”链接索引</em></small>
         </div>
     </div>
 </div>
     <div class="col-md-4">
-        <div class="panel panel-default" style="width: 480px;height: 320px;margin: 0 auto;">
+        <div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
             <div class="panel-heading">信息总览</div>
             <div class="panel-body">
             </div>
