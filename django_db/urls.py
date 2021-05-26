@@ -26,5 +26,5 @@ urlpatterns = [
     path('main/',mainpage),
     path('patient_add/',patient_add),
     path('logout/',logout_d),
-    
+    path('get_patient/',get_patient),
 ]

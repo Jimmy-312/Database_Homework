@@ -65,6 +65,18 @@ def mainpage(request):
     #print(type(userid),user)
     return render(request,'query/main.html')
 
+@csrf_exempt
+@login_required
+def get_patient(request):
+    if request.method=='POST':
+        pid = request.POST.get("pid")
+        patient = models.Patientbasicinfos.objects.get(id=pid)
+        hos = models.HospitalRecord.objects.get(instituteid=patient.hospitalid).institutename
+        checkdate = datetime.strftime(patient.checkdate,"%Y-%m-%d")
+        data = {"name":patient.patientname,"sex":patient.gender,"age":patient.age,"hos":hos,"checkdate":checkdate,\
+            "checkid":patient.checknumber,"pid":patient.patientid,"id":patient.id}
+        return HttpResponse(json.dumps(data))
+
 @login_required
 def query_patient(request):
     if request.method=='POST':
@@ -164,44 +176,49 @@ def query_patient(request):
         return render(request,'query/query_patient.html')
 
 @csrf_exempt
-@login_required
 def patient_add(request):
     if request.method == 'POST':
         obj = request.POST
         name = obj.get("name")
         sex = obj.get("sex")
-        date = obj.get("date")
+        date = obj.get("checkdate")
         checkid = obj.get("checkid")
         age = obj.get("age")
         patientid = obj.get("patientid")
         id = obj.get("id")
         hos = obj.get("hos")
-  
-        if id.strip():
-            state = models.Patientbasicinfos.objects.filter(id__exact=id)
+
+        meth = request.GET.get('me', '')
+        if meth=='':
+            if id.strip():
+                state = models.Patientbasicinfos.objects.filter(id__exact=id)
+                if len(state)!=0:
+                    data = {"tip":"病人id重复！","class":"danger"}
+                    return HttpResponse(json.dumps(data))
+            
+            state = models.Patientbasicinfos.objects.filter(patientid__exact=patientid)
             if len(state)!=0:
-                data = {"tip":"病人id重复！","class":"danger"}
-                return HttpResponse(json.dumps(data))
-        
-        state = models.Patientbasicinfos.objects.filter(patientid__exact=patientid)
-        if len(state)!=0:
-                data = {"tip":"病人编号重复！","class":"danger"}
-                return HttpResponse(json.dumps(data))
+                    data = {"tip":"病人编号重复！","class":"danger"}
+                    return HttpResponse(json.dumps(data))
         
         hosid = models.HospitalRecord.objects.filter(institutename=hos)[0].instituteid
         if len(hosid)==0:
                 data = {"tip":"医院未涵盖！","class":"danger"}
                 return HttpResponse(json.dumps(data))
-        
+        print(date)
         date = datetime.strptime(date,"%Y-%m-%d")
-        try:
-            if id.strip():
-                models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,id=id,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
-            else:
-                models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
-            data = {"tip":f"成功添加患者{name}！","class":"success"}
-        except:
-            data = {"tip":"添加失败，请重试！","class":"danger"}
+        if meth=='':
+            try:
+                if id.strip():
+                    models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,id=id,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
+                else:
+                    models.Patientbasicinfos.objects.create(hospitalid=hosid,patientid=patientid,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
+                data = {"tip":f"成功添加患者{name}！","class":"success"}
+            except:
+                data = {"tip":"添加失败，请重试！","class":"danger"}
+        else:
+            models.Patientbasicinfos.objects.filter(id=id).update(hospitalid=hosid,id=id,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
+            data = {"tip":f"成功更新患者{name}的信息！","class":"success"}
         
         return HttpResponse(json.dumps(data))
 

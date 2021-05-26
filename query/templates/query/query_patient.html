@@ -250,75 +250,128 @@
 
 <div class="modal fade" id="addpatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
+      <div class="modal-content" style="width: 800px;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="addpa_t">新增患者</h4>
         </div>
         <div class="modal-body" style="text-align: center;">
-            <form id="add_form" name="add_form" method="POST">
-                {% csrf_token %}
-                <p>
-                    <label for="user">患者姓名：</label>
-                    <input type="text" id="name_add" name="name" placeholder="输入患者姓名" value="" style="width: 150px;" required>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>检查日期：</label>
-                    <input type="date" id="date_add" name="date" required>
-                </p>
-                <p>
-                    <label for="sex_add">患者性别：</label>
-                    <select id="sex_add" name="sex" style="width: 150px;height: 25px;">
-                        <option>男</option>
-                        <option>女</option>
-                    </select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>检查编号：</label>
-                    <input type="text" id="checkid_add" name="checkid" placeholder="输入检查编号" style="width: 150px;" required>
-                </p>
-                <p>
-                    <label for="age_add">患者年龄：</label>
-                    <input type="number" id="age_add" name="age" placeholder="输入患者年龄" max=120 min=0 style="width: 150px;" required>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人编号：</label>
-                    <input type="text" id="patientid_add" name="patientid" placeholder="输入病人编号" style="width: 150px;" required>
-                </p>
-                <p>
-                    <label for="hos_add">就诊医院：</label>
-                    <input type="text" id="hos_add" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 150px;" required>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>病人&nbsp;&nbsp;&nbsp;&nbsp;ID：</label>
-                    <input type="text" id="id_add" placeholder="不填自动生成" name="id" style="width: 150px;">
-                </p>
-           
-        </div>
+            <form id="add_form" name="add_form" method="POST" class="form-horizontal">
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name_add" class="col-sm-4 control-label">患者姓名：</label>
+                            <input class="form-control" type="text" id="name_add" name="name" placeholder="输入患者姓名" value="" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex_add" class="col-sm-4 control-label">患者性别：</label>
+                            <select class="form-control" id="sex_add" name="sex" style="width: 220px;">
+                                <option>男</option>
+                                <option>女</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="age_add" class="col-sm-4 control-label">患者年龄：</label>
+                            <input type="number" class="form-control" id="age_add" name="age" placeholder="输入患者年龄" max=120 min=0 style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hos_add" class="col-sm-4 control-label">就诊医院：</label>
+                            <input type="text" id="hos_add" class="form-control" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 220px;" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">检查日期：</label>
+                            <input class="form-control" type="date" id="date_add" name="checkdate" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">检查编号：</label>
+                            <input type="text" class="form-control" id="checkid_add" name="checkid" placeholder="输入检查编号" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">病人编号：</label>
+                            <input type="text" id="patientid_add" name="pid" class="form-control" placeholder="输入病人编号" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">病人&nbsp;&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input type="text" id="id_add" class="form-control" placeholder="不填自动生成" name="id" style="width: 220px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
           <button type="submit" class="btn btn-primary" id="add_sub">确认</button> 
-        </form>
         </div>
+    </form>
       </div>
     </div>
 </div>
 
-<script>
-   $("#add_form").submit(function() {
-    //$("#add_sub").click(function(){
-        $.ajax({
-            url:'/patient_add/',
-            type:'POST',
-            data:$('#add_form').serialize(),
-            success: function(data){
-                data = JSON.parse(data)
-                $("#tip").attr("class","alert alert-"+data.class)
-                $("#tip").removeAttr("hidden")
-                $('#addpatient').modal('hide')
-                $("#tip_c").text(data.tip)
-            },
-        });
-        return false;
-    })
-</script>
-
 {% if patient_id %}
+<div class="modal fade" id="editpatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="editpa_t">编辑患者</h4>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <form id="edit_form" name="edit_form" method="POST" class="form-horizontal">
+            <div class="container-fluid">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name_edit" class="col-sm-4 control-label">患者姓名：</label>
+                    <input class="form-control" type="text" id="name_edit" name="name" placeholder="输入患者姓名" value="" style="width: 220px;" required>
+                </div>
+                <div class="form-group">
+                    <label for="sex_edit" class="col-sm-4 control-label">患者性别：</label>
+                    <select class="form-control" id="sex_edit" name="sex" style="width: 220px;">
+                        <option>男</option>
+                        <option>女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="age_edit" class="col-sm-4 control-label">患者年龄：</label>
+                    <input type="number" class="form-control" id="age_edit" name="age" placeholder="输入患者年龄" max=120 min=0 style="width: 220px;" required>
+                </div>
+                <div class="form-group">
+                    <label for="hos_edit" class="col-sm-4 control-label">就诊医院：</label>
+                    <input type="text" id="hos_edit" class="form-control" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 220px;" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">检查日期：</label>
+                    <input class="form-control" type="date" id="date_edit" name="checkdate" style="width: 220px;" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">检查编号：</label>
+                    <input type="text" class="form-control" id="checkid_edit" name="checkid" placeholder="输入检查编号" style="width: 220px;" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">病人编号：</label>
+                    <input type="text" id="patientid_edit" name="pid" class="form-control" placeholder="输入病人编号" style="width: 220px;" required readonly>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">病人&nbsp;&nbsp;&nbsp;&nbsp;ID：</label>
+                    <input type="text" id="id_edit" class="form-control" placeholder="不填自动生成" name="id" style="width: 220px;" readonly>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-primary" id="edit_sub">更新</button> 
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
 <div style="margin-left:1.5%;margin-right: 1.5%;">
 <table class="table table-hover" border="1">
     <tr>
+        <td></td>
         <td>ID</td>
         <td>病人编号</td>
         <td>病人姓名</td>
@@ -332,6 +385,11 @@
     </tr>
     {% for id,name,sex,age,hospital,check_date,d_num,a_num,checkid,pa_id in patient_id %}
     <tr>
+        <td style="text-align: center;">
+            <a href="javascript:$('#editpatient').modal('show');$.getPatient({{ id }})">编辑</a>
+            &nbsp;
+            <a>删除</a>
+        </td>
         <td>{{ id }}</td>
         <td>{{ pa_id }}</td>
         <td>{{ name }}</td>
@@ -369,5 +427,64 @@
 </div>
 {% endif %}
 
+<script>
+    $("#add_form").submit(function() {
+         $.ajax({
+             url:'/patient_add/',
+             type:'POST',
+             data:$('#add_form').serialize(),
+             success: function(data){
+                 data = JSON.parse(data)
+                 $("#tip").attr("class","alert alert-"+data.class)
+                 if(data.class == "success"){
+                     $("#add_form")[0].reset()
+                 }
+                 $("#tip").removeAttr("hidden")
+                 $('#addpatient').modal('hide')
+                 $("#tip_c").text(data.tip)
+
+             },
+         });
+         return false;
+     })
+ 
+     $("#edit_form").submit(function() {
+         $.ajax({
+             url:'/patient_add/?me=edit',
+             type:'POST',
+             data:$('#edit_form').serialize(),
+             success: function(data){
+                 data = JSON.parse(data)
+                 $("#tip").attr("class","alert alert-"+data.class)
+                 if(data.class == "success"){
+                     $("#edit_form")[0].reset()
+                 }
+                 $("#tip").removeAttr("hidden")
+                 $('#editpatient').modal('hide')
+                 $("#tip_c").text(data.tip)
+                 setTimeout(function(){location.reload()},3000)
+             },
+         });
+         return false;
+     })
+     
+     $.getPatient = function(ppid) {
+         $.ajax({
+             url:'/get_patient/',
+             type:'POST',
+             data:{pid:ppid},
+             success: function(data){
+                 data = JSON.parse(data)
+                 Object.keys(data).map(function(key){
+                     $('#edit_form  input').filter(function(){
+                         //console.log(this.name,key)
+                         return key == this.name;
+                     }).val(data[key]);
+                     $("#sex_edit").val(data.sex)
+                 });
+             }
+         })
+     };
+ </script>
 </body>
 </html>
