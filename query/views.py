@@ -77,6 +77,14 @@ def get_patient(request):
             "checkid":patient.checknumber,"pid":patient.patientid,"id":patient.id}
         return HttpResponse(json.dumps(data))
 
+@csrf_exempt
+@login_required
+def del_patient(request):
+    if request.method=='POST':
+        pid = request.POST.get("pid") 
+        patient = models.Patientbasicinfos.objects.get(id=pid)
+        pid = patient.patientid
+
 @login_required
 def query_patient(request):
     if request.method=='POST':
