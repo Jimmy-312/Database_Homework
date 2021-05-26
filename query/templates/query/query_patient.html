@@ -10,7 +10,7 @@
     <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
 <nav class="navbar navbar-inverse navbar-fixed-top ">
-    <div class="container navbar-left">
+    <div class="container navbar-left" style="width: 30%;">
         <div class="navbar-header">
             <a class="navbar-brand" href="/main/">医疗管理系统</a>
             <!--<p class="navbar-text">患者信息查询</p>-->
@@ -29,10 +29,10 @@
             </ul>
         </div>
     </div>
-    <div class="container navbar-right" style="width: 30%;margin-right: 20px;">
+    <div class="container navbar-right" style="width: 20%;margin-right: 20px;">
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li style="margin-right: 20px;"><p class="lip">{{user}},欢迎您</p></li>
+                <li style="margin-right: 20px;"><p class="lip">{{request.user.first_name}},欢迎您</p></li>
                 <li><a href="/logout/">退出</a></li>
             </ul>
         </div>

@@ -10,10 +10,10 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
+    next = request.GET.get('next', '/')
     if request.method=='POST':
         obj = request.POST
         st = obj.get("st")
-        next = request.GET.get('next', '/')
         if st=='l':
             user = obj.get("user")
             if user==None:
@@ -45,12 +45,14 @@ def index(request):
                 return render(request,'query/index.html',{"obj":obj,"error":"医院未涵盖，请重试！","st":"r"})
             else:
                 models.User.objects.create(userid=user,age=age,departmentid=dep,username=name,gender=sex,hospitalid=hosid[0].instituteid)
-                User.objects.create_user(username=user, password=pwd)
+                User.objects.create_user(username=user, password=pwd,first_name=name)
                 return render(request,'query/index.html',{"tip":"注册成功,请登录!","st":"l"})
     else:
         if request.user.is_authenticated:
             return HttpResponseRedirect("/main/")
-        return render(request,'query/index.html',{"st":"l"})
+        if next != '/':
+            return render(request,'query/index.html',{"st":"l","error":"请先登录！"})
+        return render(request,'query/index.html',{"st":"l"})        
 
 def logout_d(request):
     logout(request)
@@ -58,8 +60,10 @@ def logout_d(request):
 
 @login_required
 def mainpage(request):
-    userid = request.user
-    return render(request,'query/main.html',{"user":userid})
+    #userid = request.user
+    #user = userid.first_name
+    #print(type(userid),user)
+    return render(request,'query/main.html')
 
 @login_required
 def query_patient(request):
