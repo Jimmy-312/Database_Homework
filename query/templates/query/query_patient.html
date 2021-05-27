@@ -370,7 +370,6 @@
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="active" id="ap1"><a href="javascript:$.selectpage(1)">1</a></li>
         </ul>
       </nav>
 <table class="table table-hover" border="1" id="retable">
@@ -393,9 +392,9 @@
 <script>
     $.selectpage = function(num){
         $('.page'+pnow).hide();
-        $("#ap"+pnow).removeAttr("class")
+        $("#ap"+pnow).attr("class","lpage")
         pnow=num;
-        $("#ap"+pnow).attr("class","active")
+        $("#ap"+pnow).attr("class","active lpage")
         $('.page'+pnow).show();
     }
 
@@ -404,9 +403,9 @@
             return false
         }
         $('.page'+pnow).hide();
-        $("#ap"+pnow).removeAttr("class")
+        $("#ap"+pnow).attr("class","lpage")
         pnow+=num;
-        $("#ap"+pnow).attr("class","active")
+        $("#ap"+pnow).attr("class","active lpage")
         $('.page'+pnow).show();
     }
 
@@ -533,7 +532,7 @@
 
                 st=''
                 $(".lpage").remove()
-                for(var i=2;i<page+1;i++){
+                for(var i=1;i<page+1;i++){
                     st+='<li class="lpage" id="ap'+i+'"><a href="javascript:$.selectpage('+i+')">'+i+'</a></li>'
                 }
                 st+='<li class="lpage">\
@@ -542,6 +541,7 @@
             </a>\
           </li>'
                 $(".pagination").append(st)
+                $("#ap1").attr("class","active lpage")
              },
          });
          return false;
