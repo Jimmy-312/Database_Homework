@@ -222,7 +222,7 @@
     </div>
 </div>
 <div style="text-align: center;margin-top: 20px;">
-<input class="btn btn-default" type="submit" value="查询">
+<input class="btn btn-default" id="bquery" type="submit" value="查询">
 </form>   
 <button class="btn btn-default" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">新增</button>
 </div> 
@@ -471,11 +471,15 @@
      var page=1
      var pnow=1
      $("#query").submit($.getContent = function() {
+         $("#bquery").attr("disabled","disabled")
+         $("#bquery").val("查询中")
          $.ajax({
              url:'/query_patient/',
              type:'POST',
              data:$('#query').serialize(),
              success: function(data){
+                $("#bquery").val("查询")
+                $("#bquery").removeAttr("disabled")
                  data = JSON.parse(data)
                  $("#tip2").attr("class","alert alert-"+data.class)
                  $("#tip2").removeAttr("hidden")
