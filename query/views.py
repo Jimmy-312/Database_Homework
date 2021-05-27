@@ -250,7 +250,7 @@ def query_detail(request):
         areaid = [i.areaid for i in models.DArearoi.objects.filter(diseaseid__contains=daid)]
 
         pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
-        name = pid[0].patientname if pid!=[] else ''
+        name = pid[0].patientname if pid!=[] else '未指定患者'
         pid = pid[0].patientid if pid!=[] else ''
         doctors = models.User.objects.filter(username=doctor)
         doctors = doctors[0].userid if list(doctors)!=[] else ''
@@ -264,22 +264,26 @@ def query_detail(request):
             try:
                 patient = models.Patientbasicinfos.objects.get(patientid=i.patientid)
             except:
-                return render(request,'query/detail.html',{'title':'病理','error':'数据库错误，我的代码没错'})
+                return HttpResponse('数据库错误，我的代码没错', status=401)
 
             imgpath = models.Imagepath.objects.get(imageid=i.imageid).imgpath
             diseaseids = models.DArearoi.objects.filter(areaid=i.areaid)
             disease = '、'.join([models.Diseasedict.objects.get(diseaseid=i.diseaseid).diseasename for i in diseaseids])
-            if datype=='':
+            '''if datype=='':
                 yzx = '请输入疾病类型以检验'
             else:
                 yzx = ('一致' if datype in patient.examinationfindings else '不一致') if patient.examinationfindings!= '无' and patient.examinationfindings!='' else '-'
-            content=[i.imageid,i.pathtype,models.User.objects.get(userid=i.userid).username,patient.id,patient.patientname,disease,imgpath,yzx] 
+            '''
+            content=[i.imageid,i.pathtype,models.User.objects.get(userid=i.userid).username,patient.id,patient.patientname,disease,imgpath] 
             image_list.append(content)
 
-        num = str(len(image_list))
+        num = len(image_list)
+        sym = "success" if num>0 else "warning"
         print(name,num)
-        return render(request,'query/detail.html',{'data':image_list,'counter':num,'title':'疾病','obj':obj,'name':name})
-    return render(request,'query/detail.html',{'title':'疾病'})
+
+        data = {'data':image_list,'counter':str(num),'name':name,'class':sym}
+        return HttpResponse(json.dumps(data))
+    return render(request,'query/detail.html',{'title':'疾病',"type":"detail"})
 
 @csrf_exempt
 @login_required
@@ -299,7 +303,7 @@ def query_adetail(request):
         areaid = [i.areaid for i in models.AArearoi.objects.filter(anatomyid__contains=daid)]
 
         pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
-        name = pid[0].patientname if pid!=[] else ''
+        name = pid[0].patientname if pid!=[] else '未指定患者'
         pid = pid[0].patientid if pid!=[] else ''
         doctors = models.User.objects.filter(username=doctor)
         doctors = doctors[0].userid if list(doctors)!=[] else ''
@@ -317,11 +321,14 @@ def query_adetail(request):
             imgpath = models.Imagepath.objects.get(imageid=i.imageid).imgpath
             diseaseids = models.AArearoi.objects.filter(areaid=i.areaid)
             disease = '、'.join([models.Anatomydict.objects.get(anatomyid=i.anatomyid).anatomyname for i in diseaseids])
-            content=[i.imageid,i.pathtype,models.User.objects.get(userid=i.userid).username,patient.id,patient.patientname,disease,imgpath,''] 
+            content=[i.imageid,i.pathtype,models.User.objects.get(userid=i.userid).username,patient.id,patient.patientname,disease,imgpath] 
             image_list.append(content)
 
-        num = str(len(image_list))
+        num = len(image_list)
+        sym = "success" if num>0 else "warning"
         print(name,num)
-        return render(request,'query/detail.html',{'name':name,'data':image_list,'counter':num,'title':'解剖','ati':'a','obj':obj})
-    return render(request,'query/detail.html',{'title':'解剖','ati':'a'})
+
+        data = {'data':image_list,'counter':str(num),'name':name,'class':sym}
+        return HttpResponse(json.dumps(data))
+    return render(request,'query/detail.html',{'title':'解剖','type':'adetail'})
     

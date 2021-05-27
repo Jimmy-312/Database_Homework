@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1-dist/css/mycss.css">
 </head>
 <body style="padding-top: 70px;padding-bottom: 70px">
+    <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
 <nav class="navbar navbar-inverse navbar-fixed-top ">
     <div class="container navbar-left" style="width: 30%;">
         <div class="navbar-header">
@@ -71,20 +73,19 @@
 
 
 <div class="container-fluid">
-    <div class="col-md-4">
-    <div class="panel panel-default" style="width: 500px;height: 320px;">
+    
+    <div class="panel panel-default" style="width: 500px;height: 360px;margin: 0px auto;">
         <div class="panel-heading">{{ title }}标注条件筛选</div>
-        <div class="panel-body">
-            <p class="lead">{% if name%} {{ name }} {% else %}未指定患者{% endif %}</p>
-        <form action="/query_{{ati}}detail/" method="post">
-        {% csrf_token %}
-        <p>
-            <label for="id_patient">请输入病人ID</label>
-            <input type="text" id="id_patient" name="pid" placeholder="病人ID" value='{{ obj.pid }}'>
-        </p>
-        <p>
-            <label for="doctor">请输入标注的医生</label>
-            <input type="text" id="doctor_name" list="type_list" name='doctor_name' value='{{obj.doctor_name}}' placeholder="医生姓名">
+        <div class="panel-body" style="text-align: center;">
+            <p class="lead" id="ptname">未指定患者</p>
+        <form id="query" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="id_patient">病人ID</label>
+            <input class="form-control" style="width: 200px;" type="text" id="id_patient" name="pid" placeholder="请输入病人ID">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="doctor">标注医生</label>
+            <input class="form-control" style="width: 200px;" type="text" id="doctor_name" list="type_list" name='doctor_name' placeholder="请输入医生姓名">
             <datalist id="type_list">
                 <option>陈飞</option>
                 <option>胡伟玲</option>
@@ -105,77 +106,144 @@
                 <option>杜平</option>
                 <option>张哲</option>
             </datalist>
-        </p>
-        {% if title == '疾病' %}
-        <p>
-            <label for="illness_type">请输入疾病类型</label>
-            <input type="text" id="illness_type" name="da_type" value="{{obj.da_type}}" placeholder="疾病类型">
-        </p>
-        {% endif %}
-        {% if title == '解剖' %}
-        <p>
-            <label for="a_type">请输入解剖位置</label>
-            <input type="text" id="aill_type" name="da_type" value="{{obj.da_type}}" placeholder="位置类型">
-        </p>
-        {% endif %}
-        <p>
-            <label for="illness">请选择标注类型</label>
-            <input type="text" id="type" list="bztype" name='bztype' value="{{obj.bztype}}" placeholder="标注类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="illness_type">{{ title }}类型</label>
+            <input type="text" class="form-control" style="width: 200px;" id="illness_type" name="da_type" placeholder="请输入{{title}}类型">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="type">标注类型</label>
+            <input class="form-control" style="width: 200px;" type="text" id="type" list="bztype" name='bztype' placeholder="请选择标注类型">
             <datalist id="bztype">
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
             </datalist>
-        </p>
-        <input class="btn btn-default" style="margin-top: 5px;" {%if error%}disabled="disabled"{%endif%} type="submit" value="查询">
+        </div>
+        <button class="btn btn-default" style="margin-top: 5px;" data-toggle="modal" data-target="#addbz">新增</button>
+        <input id="bquery" class="btn btn-default" style="margin-top: 5px;margin-left: 10px;" type="submit" value="查询">
     </form>
     </div>
     </div>
-</div>
+
 </div>
 
-{% if counter%}
-<div class="alert alert-success" style="margin:0.5% 1.5% 1% 1.5%;" role="alert"> 
-    <p>共查询到{{counter}}条符合条件的数据</p>
+<div id="tip" class="alert alert-success" style="margin:0.5% 1.5% 1% 1.5%;text-align: center;" role="alert" hidden>  
+    <p id="tip_c"></p>
 </div> 
-{% endif %}
 
+<div id="tip2" class="alert alert-success" style="margin:1.5% 1.5% 1% 1.5%;text-align: center;" role="alert" hidden>  
+    <p id="tip_c2"></p>
+</div> 
 
-{% if data %}
+<div style="margin-left:1.5%;margin-right: 1.5%;text-align: center;" id="result" hidden>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a href="javascript:$.nextpage(-1)" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 <div style="margin-left:1.5%;margin-right: 1.5%;">
-<table class="table table-hover" border="1">
+<table class="table table-hover" id="retable" border="1">
     <tr>
-        <td>ImageID</td>
-        <td>Type</td>
+        <td>图像ID</td>
+        <td>标注类型</td>
         <td>标注医生</td>
         <td>患者ID</td>
         <td>患者姓名</td>
         <td>{{title}}类型</td>
-        <td>ImagePath</td>
-        {% if title == '疾病' %}
-        <td>一致性检验<s>个人觉得没啥用，为了应对实验要求</s></td>
-        {% endif %}
-    </tr> 
-{% for iid,itype,idoc,pid,pname,dname,imgpath,yzx in data %}
-    <tr>
-        <td>{{ iid }}</td>
-        <td>{{ itype }}</td>
-        <td>{{ idoc }}</td>
-        <td>{{ pid }}</td>
-        <td>{{ pname }}</td>
-        <td>{{ dname }}</td>
-        <td>{{ imgpath }}</td>
-        {% if title == '疾病' %}
-        <td>{{ yzx }}</td>
-        {% endif %}
-    </tr> 
-{% endfor %}
+        <td>图像路径</td>
+    </tr>  
 </table>
 </div>
-{% endif%}
 
+<script>
+    var page=1
+    var pnow=1
+    $.selectpage = function(num){
+        $('.page'+pnow).hide();
+        $("#ap"+pnow).attr("class","lpage")
+        pnow=num;
+        $("#ap"+pnow).attr("class","active lpage")
+        $('.page'+pnow).show();
+    }
 
-<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+    $.nextpage = function(num){
+        if(pnow+num>page|pnow+num<1){
+            return false
+        }
+        $('.page'+pnow).hide();
+        $("#ap"+pnow).attr("class","lpage")
+        pnow+=num;
+        $("#ap"+pnow).attr("class","active lpage")
+        $('.page'+pnow).show();
+    }
+
+    $("#query").submit($.getContent = function() {
+         $("#bquery").attr("disabled","disabled")
+         $("#bquery").val("查询中")
+         $.ajax({
+             url:'/query_{{type}}/',
+             type:'POST',
+             data:$('#query').serialize(),
+             success: function(data){
+                $("#bquery").val("查询")
+                $("#bquery").removeAttr("disabled")
+                 data = JSON.parse(data)
+                 $("#tip2").attr("class","alert alert-"+data.class)
+                 $("#tip2").removeAttr("hidden")
+                 $("#tip_c2").text("总共查询到"+data.counter+"个符合条件的标注")
+                 $("#result").attr("hidden",'')
+                console.log(data)
+                if(data.counter>0){$("#result").removeAttr("hidden")}
+                 var st=''
+                 page=1
+                 for(var i=0;i<data.counter;i++){
+                     if((i+1)%20==0){
+                         page+=1
+                     }
+                     var pa=data.data[i]
+                    st+='<tr class="contentcol page'+page+'" hidden>\
+                        <td>'+pa[0]+'</td>\
+                        <td>'+pa[1]+'</td>\
+                        <td>'+pa[2]+'</td>\
+                        <td>'+pa[3]+'</td>\
+                        <td>'+pa[4]+'</td>\
+                        <td>'+pa[5]+'</td>\
+                        <td>'+pa[6]+'</td>\
+                    </tr>'
+                }
+                $(".contentcol").remove()
+                $("#retable").append(st)
+                $(".page1").show()
+                pnow = 1
+                //console.log(page)
+
+                st=''
+                $(".lpage").remove()
+                for(var i=1;i<page+1;i++){
+                    st+='<li class="lpage" id="ap'+i+'"><a href="javascript:$.selectpage('+i+')">'+i+'</a></li>'
+                }
+                st+='<li class="lpage">\
+            <a href="javascript:$.nextpage(1)" aria-label="Next">\
+              <span aria-hidden="true">&raquo;</span>\
+            </a>\
+          </li>'
+                $(".pagination").append(st)
+                $("#ap1").attr("class","active lpage")
+                $("#ptname").text(data.name)
+            },
+            error: function(data){
+                $("#tip").attr("class","alert alert-danger")
+                $("#tip").removeAttr("hidden")
+                $("#tip_c").text("数据库错误，我的代码没错")
+            }
+        })
+            return false;
+        })
+</script>
 </body>
 </html>
