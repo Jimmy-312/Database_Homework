@@ -106,6 +106,12 @@ def del_patient(request):
         pid = request.POST.get("pid") 
         patient = models.Patientbasicinfos.objects.get(id=pid)
         pid = patient.patientid
+        name = patient.patientname
+        patient.delete()
+        models.DLabeledimage.objects.filter(patientid=pid).delete()
+        models.ALabeledimage.objects.filter(patientid=pid).delete()
+        data = {"class":"success","tip":f"成功删除患者{name}"}
+        return HttpResponse(json.dumps(data))
 
 @csrf_exempt
 @login_required
@@ -388,11 +394,19 @@ def query_detail(request):
             daid = '-' if datype.strip() else ''
         areaid = [i.areaid for i in models.DArearoi.objects.filter(diseaseid__contains=daid)]
 
-        pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
-        name = pid[0].patientname if pid!=[] else '未指定患者'
-        pid = pid[0].patientid if pid!=[] else ''
-        doctors = models.User.objects.filter(username=doctor)
-        doctors = doctors[0].userid if list(doctors)!=[] else ''
+        pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else ['-']
+        if pid == []:
+            data = {'data':[],'counter':0,'name':'未指定患者','class':"warning"}
+            return HttpResponse(json.dumps(data))
+
+        name = pid[0].patientname if pid!=['-'] else '未指定患者'
+        pid = pid[0].patientid if pid!=['-'] else ''
+
+        doctors = list(models.User.objects.filter(username=doctor)) if doctor.strip() else ['-']
+        if doctors == []:
+            data = {'data':[],'counter':0,'name':'未指定患者','class':"warning"}
+            return HttpResponse(json.dumps(data))
+        doctors = doctors[0].userid if doctors!=['-'] else ''
     
         images = models.DLabeledimage.objects.filter(patientid__contains=pid,pathtype__contains=dtype,areaid__in=areaid)
         if doctors!='':
@@ -445,11 +459,19 @@ def query_adetail(request):
             daid = '-' if datype.strip() else ''
         areaid = [i.areaid for i in models.AArearoi.objects.filter(anatomyid__contains=daid)]
 
-        pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else []
-        name = pid[0].patientname if pid!=[] else '未指定患者'
-        pid = pid[0].patientid if pid!=[] else ''
-        doctors = models.User.objects.filter(username=doctor)
-        doctors = doctors[0].userid if list(doctors)!=[] else ''
+        pid = list(models.Patientbasicinfos.objects.filter(id=id)) if id.strip() else ['-']
+        if pid == []:
+            data = {'data':[],'counter':0,'name':'未指定患者','class':"warning"}
+            return HttpResponse(json.dumps(data))
+
+        name = pid[0].patientname if pid!=['-'] else '未指定患者'
+        pid = pid[0].patientid if pid!=['-'] else ''
+
+        doctors = list(models.User.objects.filter(username=doctor)) if doctor.strip() else ['-']
+        if doctors == []:
+            data = {'data':[],'counter':0,'name':'未指定患者','class':"warning"}
+            return HttpResponse(json.dumps(data))
+        doctors = doctors[0].userid if doctors!=['-'] else ''
     
         images = models.ALabeledimage.objects.filter(patientid__contains=pid,pathtype__contains=dtype,areaid__in=areaid)
         if doctors!='':
