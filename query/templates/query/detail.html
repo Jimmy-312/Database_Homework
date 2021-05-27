@@ -113,26 +113,131 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="type">标注类型</label>
-            <input class="form-control" style="width: 200px;" type="text" id="type" list="bztype" name='bztype' placeholder="请选择标注类型">
-            <datalist id="bztype">
+            <select class="form-control" style="width: 200px;" type="text" id="type" name='bztype'>
+                <option value="">全部</option>
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
-            </datalist>
+            </select>
         </div>
-        <button class="btn btn-default" style="margin-top: 5px;" data-toggle="modal" data-target="#addbz">新增</button>
-        <input id="bquery" class="btn btn-default" style="margin-top: 5px;margin-left: 10px;" type="submit" value="查询">
+        <button class="btn btn-default" type="button" style="margin-top: 5px;" data-toggle="modal" data-target="#addbz" onclick="$('#name_add').val($('#id_patient').val());">新增</button>
+        <input id="bquery" class="btn btn-primary" style="margin-top: 5px;margin-left: 10px;" type="submit" value="查询">
     </form>
     </div>
     </div>
-
 </div>
 
-<div id="tip" class="alert alert-success" style="margin:0.5% 1.5% 1% 1.5%;text-align: center;" role="alert" hidden>  
+<div class="modal fade" id="addbz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="addpa_t">新增{{title}}标注</h4>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <form id="add_form" name="add_form" method="POST" class="form-horizontal">
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name_add" class="col-sm-4 control-label">患者&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input class="form-control" type="text" id="name_add" name="name" placeholder="请输入患者ID" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex_add" class="col-sm-4 control-label">标注医生：</label>
+                            <input type="text" class="form-control" id="doctor_add" name="doctor" list="type_list" placeholder="请输入标注医生" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age_add" class="col-sm-4 control-label">区域编号：</label>
+                            <input type="text" class="form-control" id="area_add" name="areaid" placeholder="请输入区域编号" style="width: 220px;" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标注类型：</label>
+                            <select class="form-control" id="bztype_add" name="bztype" style="width: 220px;">
+                                <option value="RECTANGLE">Rectangle</option>
+                                <option value="POLYGON">Polygon</option>
+                                <option value="HAND">Hand</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">图像&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input type="text" class="form-control" id="imageid_add" name="imageid" placeholder="请输入图像ID" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标注&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input type="text" id="id_add" name="bzid" class="form-control" placeholder="不填自动生成" style="width: 220px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-primary" id="add_sub">确认</button> 
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editbz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 800px;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="editpa_t">修改{{title}}标注</h4>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <form id="edit_form" name="edit_form" method="POST" class="form-horizontal">
+                <div class="container-fluid">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name_edit" class="col-sm-4 control-label">患者&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input class="form-control" type="text" id="name_edit" name="name" placeholder="请输入患者ID" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex_edit" class="col-sm-4 control-label">标注医生：</label>
+                            <input type="text" class="form-control" id="doctor_edit" name="doctor" list="type_list" placeholder="请输入标注医生" style="width: 220px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age_edit" class="col-sm-4 control-label">区域编号：</label>
+                            <input type="text" class="form-control" id="area_edit" name="areaid" placeholder="请输入区域编号" style="width: 220px;" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标注类型：</label>
+                            <select class="form-control" id="bztype_edit" name="bztype" style="width: 220px;">
+                                <option value="RECTANGLE">Rectangle</option>
+                                <option value="POLYGON">Polygon</option>
+                                <option value="HAND">Hand</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">图像&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input type="text" class="form-control" id="imageid_edit" name="imageid" placeholder="请输入图像ID" style="width: 220px;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">标注&nbsp;&nbsp;&nbsp;ID：</label>
+                            <input type="text" id="id_edit" name="bzid" class="form-control" placeholder="不填自动生成" style="width: 220px;" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-primary" id="edit_sub">更新</button> 
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
+
+<div id="tip" class="alert alert-success" style="margin:1% 1.5% 1% 1.5%;text-align: center;" role="alert" hidden>  
     <p id="tip_c"></p>
 </div> 
 
-<div id="tip2" class="alert alert-success" style="margin:1.5% 1.5% 1% 1.5%;text-align: center;" role="alert" hidden>  
+<div id="tip2" class="alert alert-success" style="margin:1% 1.5% 1%;text-align: center;" role="alert" hidden>  
     <p id="tip_c2"></p>
 </div> 
 
@@ -149,12 +254,15 @@
 <div style="margin-left:1.5%;margin-right: 1.5%;">
 <table class="table table-hover" id="retable" border="1">
     <tr>
+        <td></td>
+        <td>标注ID</td>
         <td>图像ID</td>
         <td>标注类型</td>
         <td>标注医生</td>
         <td>患者ID</td>
         <td>患者姓名</td>
         <td>{{title}}类型</td>
+        <td>区域编号</td>
         <td>图像路径</td>
     </tr>  
 </table>
@@ -163,6 +271,13 @@
 <script>
     var page=1
     var pnow=1
+    $("#id_patient").val('{{obj.id}}')
+    $("#doctor_name").val('{{obj.doctor}}') 
+    $("#illness_type").val('{{obj.type}}')
+    {% if obj.ptype %}
+    $("#type").val('{{obj.ptype}}')
+    {% endif %}
+
     $.selectpage = function(num){
         $('.page'+pnow).hide();
         $("#ap"+pnow).attr("class","lpage")
@@ -182,6 +297,64 @@
         $('.page'+pnow).show();
     }
 
+    $.getbz = function(ppid) {
+         $.ajax({
+             url:'/get_{{type}}/',
+             type:'POST',
+             data:{pid:ppid},
+             success: function(data){
+                 data = JSON.parse(data)
+                 Object.keys(data).map(function(key){
+                     $('#edit_form  input').filter(function(){
+                         //console.log(this.name,key)
+                         return key == this.name;
+                     }).val(data[key]);
+                     $("#bztype_edit").val(data.bztype)
+                 });
+             }
+         })
+     };
+
+     $("#edit_form").submit(function() {
+         $.ajax({
+             url:'/{{type}}_add/?me=edit',
+             type:'POST',
+             data:$('#edit_form').serialize(),
+             success: function(data){
+                 data = JSON.parse(data)
+                 $("#tip").attr("class","alert alert-"+data.class)
+                 if(data.class == "success"){
+                     $("#edit_form")[0].reset()
+                 }
+                 $("#tip").removeAttr("hidden")
+                 $('#editbz').modal('hide')
+                 $("#tip_c").text(data.tip)
+                 $.getContent()
+             },
+         });
+         return false;
+     })
+
+    $("#add_form").submit(function() {
+         $.ajax({
+             url:'/{{type}}_add/',
+             type:'POST',
+             data:$('#add_form').serialize(),
+             success: function(data){
+                 data = JSON.parse(data)
+                 $("#tip").attr("class","alert alert-"+data.class)
+                 if(data.class == "success"){
+                     $("#add_form")[0].reset()
+                 }
+                 $("#tip").removeAttr("hidden")
+                 $('#addpatient').modal('hide')
+                 $("#tip_c").text(data.tip)
+                 $.getContent()
+             },
+         });
+         return false;
+     })
+
     $("#query").submit($.getContent = function() {
          $("#bquery").attr("disabled","disabled")
          $("#bquery").val("查询中")
@@ -197,7 +370,7 @@
                  $("#tip2").removeAttr("hidden")
                  $("#tip_c2").text("总共查询到"+data.counter+"个符合条件的标注")
                  $("#result").attr("hidden",'')
-                console.log(data)
+                //console.log(data)
                 if(data.counter>0){$("#result").removeAttr("hidden")}
                  var st=''
                  page=1
@@ -207,6 +380,11 @@
                      }
                      var pa=data.data[i]
                     st+='<tr class="contentcol page'+page+'" hidden>\
+                        <td style="text-align: center;">\
+            <a href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
+            &nbsp;\
+            <a>删除</a>\
+        </td>\
                         <td>'+pa[0]+'</td>\
                         <td>'+pa[1]+'</td>\
                         <td>'+pa[2]+'</td>\
@@ -214,6 +392,8 @@
                         <td>'+pa[4]+'</td>\
                         <td>'+pa[5]+'</td>\
                         <td>'+pa[6]+'</td>\
+                        <td>'+pa[7]+'</td>\
+                        <td>'+pa[8]+'</td>\
                     </tr>'
                 }
                 $(".contentcol").remove()
@@ -244,6 +424,10 @@
         })
             return false;
         })
+
+        {% if obj.ptype or obj.id or obj.doctor or obj.type %}
+        $.getContent()
+        {% endif %}
 </script>
 </body>
 </html>

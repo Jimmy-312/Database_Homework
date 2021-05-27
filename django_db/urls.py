@@ -28,4 +28,8 @@ urlpatterns = [
     path('logout/',logout_d),
     path('get_patient/',get_patient),
     path('del_patient/',del_patient),
+    path('detail_add/',detail_add),
+    path('adetail_add/',adetail_add),
+    path('get_detail/',get_detail),
+    path('get_adetail/',get_adetail),
 ]

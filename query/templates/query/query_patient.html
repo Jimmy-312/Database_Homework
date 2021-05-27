@@ -77,11 +77,11 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="sex">患者性别</label>
-            <input class="form-control" style="width: 200px;" type="text" id="sex" list="sex_list" name='sex' placeholder="请输入患者性别">
-            <datalist id="sex_list">
+            <select class="form-control" style="width: 200px;" id="sex" list="sex_list" name='sex'>
+                <option value="">全部</option>
                 <option>男</option>
                 <option>女</option>
-            </datalist>
+            </select>
         </div>
         <div class="form-group form-inline">
             <label class="col-sm-4 control-label" for="age">患者年龄范围</label>
@@ -136,6 +136,10 @@
             <div class="panel-body" style="text-align: center;">
                 
         <div class="form-group">
+            <label class="col-sm-4 control-label" for="illness_type">疾病类型</label>
+            <input class="form-control" style="width: 200px;" type="text" id="illness_type" name="ill_type" placeholder="请输入疾病类型">
+        </div>
+        <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor_name">标注疾病的医生</label>
             <input class="form-control" style="width: 200px;" type="text" id="doctor_name" list="named_list" name='doctor_name' placeholder="请选择医生姓名">
             <datalist id="named_list">
@@ -160,54 +164,30 @@
             </datalist>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="doctor_a">标注解剖的医生</label>
-            <input class="form-control" style="width: 200px;" type="text" id="doctor_a" list="name_list" name='doctor_a' placeholder="请选择医生姓名">
-            <datalist id="name_list">
-                <option>陈飞</option>
-                <option>胡伟玲</option>
-                <option>杨远航</option>
-                <option>张旭</option>
-                <option>郑文芳</option>
-                <option>胡梦佳</option>
-                <option>余涛</option>
-                <option>陈睿</option>
-                <option>章鑫森</option>
-                <option>李晶晶</option>
-                <option>林讷</option>
-                <option>鄢雪辉</option>
-                <option>吕凯琪</option>
-                <option>钟兴伟</option>
-                <option>刘志红</option>
-                <option>李均</option>
-                <option>杜平</option>
-                <option>张哲</option>
-            </datalist>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-4 control-label" for="illness_type">疾病类型</label>
-            <input class="form-control" style="width: 200px;" type="text" id="illness_type" name="ill_type" placeholder="请输入疾病类型">
+            <label class="col-sm-4 control-label" for="d_type">疾病标注类型</label>
+            <select class="form-control" style="width: 200px;" id="d_type" list="dtype_list" name='ill_bztype'>
+                <option value="">全部</option>
+                <option value="RECTANGLE">Rectangle</option>
+                <option value="POLYGON">Polygon</option>
+                <option value="HAND">Hand</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="a_type">解剖位置</label>
             <input class="form-control" style="width: 200px;" type="text" id="aill_type" name="aill_type" placeholder="请输入位置类型">
         </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="d_type">疾病标注类型</label>
-            <input class="form-control" style="width: 200px;" type="text" id="d_type" list="dtype_list" name='ill_bztype' placeholder="请选择标注类型">
-            <datalist id="dtype_list">
-                <option value="RECTANGLE">Rectangle</option>
-                <option value="POLYGON">Polygon</option>
-                <option value="HAND">Hand</option>
-            </datalist>
+            <label class="col-sm-4 control-label" for="doctor_a">标注解剖的医生</label>
+            <input class="form-control" style="width: 200px;" type="text" id="doctor_a" list="named_list" name='doctor_a' placeholder="请选择医生姓名">
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="a_type">解剖标注类型</label>
-            <input class="form-control" style="width: 200px;" type="text" id="a_type" list="atype_list" name='jp_type' placeholder="请选择标注类型">
-            <datalist id="atype_list">
+            <select class="form-control" style="width: 200px;" id="a_type" name='jp_type'>
+                <option value="">全部</option>
                 <option value="RECTANGLE">Rectangle</option>
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
-            </datalist>
+            </select>
         </div>
         <small><em>快速建立“查看”链接索引</em></small>
         </div>
@@ -222,7 +202,7 @@
     </div>
 </div>
 <div style="text-align: center;margin-top: 20px;">
-<input class="btn btn-default" id="bquery" type="submit" value="查询">
+<input class="btn btn-primary" id="bquery" type="submit" value="查询">
 </form>   
 <button class="btn btn-default" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">新增</button>
 </div> 
@@ -509,23 +489,11 @@
         <td>'+pa[7]+'</td>\
         <td>\
             '+pa[8]+'\
-            <a href="javascript:document.form'+pa[0]+'.submit();">查看</a>\
-            <form name="form'+pa[0]+'" action="/query_detail/" method="post">\
-                <input type="hidden" name="pid" value='+pa[0]+' >\
-                <input type="hidden" name="doctor_name" value='+$("#doctor_name").val()+' >\
-                <input type="hidden" name="bztype" value='+$("#illness_type").val()+' >\
-                <input type="hidden" name="da_type" value='+$("#d_type").val()+'>\
-            </form>\
+            <a href="/query_detail/?id='+pa[0]+'&doctor='+$("#doctor_name").val()+'&type='+$("#illness_type").val()+'&ptype='+$("#d_type option:selected").val()+'">查看</a>\
         </td>\
         <td>\
             '+pa[9]+'\
-            <a href="javascript:document.form'+pa[0]+'2.submit();">查看</a>\
-            <form name="form'+pa[0]+'2" action="/query_adetail/" method="post">\
-                <input type="hidden" name="pid" value='+pa[0]+' >\
-                <input type="hidden" name="doctor_name" value='+$("#doctor_a").val()+' >\
-                <input type="hidden" name="bztype" value='+$("#aill_type").val()+' >\
-                <input type="hidden" name="da_type" value='+$("#a_type").val()+' >\
-            </form>\
+            <a href="/query_adetail/?id='+pa[0]+'&doctor='+$("#doctor_a").val()+'&type='+$("#aill_type").val()+'&ptype='+$("#a_type option:selected").val()+'">查看</a>\
         </td>"'    
                  }
                 $(".contentcol").remove()
