@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1-dist/css/bootstrap.css">
+    <link rel="icon" href="/static/img/favicon.ico">
     <title>医疗管理系统</title>
     <link rel="stylesheet" href="/static/plugins/bootstrap-3.4.1-dist/css/mycss.css">
 </head>
@@ -64,7 +65,18 @@
 
 
 <div class="container-fluid">
-<h1>{{ request.user.first_name }}, 欢迎您！</h1>
+    <div class="jumbotron" style="background-image:url(/static/img/head.jpg);">
+        <h1>救救我！SOS！</h1>
+        <p>速来！！！</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">了解更多</a></p>
+    </div>
+    <div class="panel panel-default" style="width: 500px;height: 360px;margin-left:50px;margin-top: 50px;">
+        <div class="panel-heading"><h3 class="panel-title">个人信息</h3></div>
+        <div class="panel-body" style="text-align: center;">
+            {{ request.user.first_name }}, 欢迎您！
+        </div>
+    </div>
+
 </div>
 
 
