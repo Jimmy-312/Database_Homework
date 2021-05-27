@@ -255,15 +255,15 @@
 <table class="table table-hover" id="retable" border="1">
     <tr>
         <td></td>
-        <td>标注ID</td>
-        <td>图像ID</td>
-        <td>标注类型</td>
-        <td>标注医生</td>
-        <td>患者ID</td>
-        <td>患者姓名</td>
-        <td>{{title}}类型</td>
-        <td>区域编号</td>
-        <td>图像路径</td>
+        <td><strong>标注ID</strong></td>
+        <td><strong>图像ID</strong></td>
+        <td><strong>标注类型</strong></td>
+        <td><strong>标注医生</strong></td>
+        <td><strong>患者ID</strong></td>
+        <td><strong>患者姓名</strong></td>
+        <td><strong>{{title}}类型</strong></td>
+        <td><strong>区域编号</strong></td>
+        <td><strong>图像路径</strong></td>
     </tr>  
 </table>
 </div>
@@ -347,13 +347,28 @@
                      $("#add_form")[0].reset()
                  }
                  $("#tip").removeAttr("hidden")
-                 $('#addpatient').modal('hide')
+                 $('#addbz').modal('hide')
                  $("#tip_c").text(data.tip)
                  $.getContent()
              },
          });
          return false;
      })
+
+     $.delbz = function(pid){
+         $.ajax({
+             url:'/{{type}}_del/',
+             type:'POST',
+             data:{'pid':pid},
+             success: function(data){
+                data = JSON.parse(data)
+                $("#tip").attr("class","alert alert-"+data.class)
+                $("#tip").removeAttr("hidden")
+                $("#tip_c").text(data.tip)
+                $.getContent()
+             }
+         })
+     }
 
     $("#query").submit($.getContent = function() {
          $("#bquery").attr("disabled","disabled")
@@ -383,7 +398,7 @@
                         <td style="text-align: center;">\
             <a href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
             &nbsp;\
-            <a>删除</a>\
+            <a href="javascript:$.delbz('+pa[0]+')">删除</a>\
         </td>\
                         <td>'+pa[0]+'</td>\
                         <td>'+pa[1]+'</td>\

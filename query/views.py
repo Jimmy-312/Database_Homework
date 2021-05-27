@@ -476,4 +476,22 @@ def query_adetail(request):
     else:
         obj = request.GET
         return render(request,'query/detail.html',{'title':'解剖',"type":"adetail","obj":obj})
-    
+
+
+@csrf_exempt
+@login_required
+def detail_del(request):
+    if request.method == "POST":
+        pid = request.POST.get("pid")
+        models.DLabeledimage.objects.get(id=pid).delete()
+        data = {"class":"success","tip":f"成功删除疾病标注{pid}"}
+        return HttpResponse(json.dumps(data))
+
+@csrf_exempt
+@login_required
+def adetail_del(request):
+    if request.method == "POST":
+        pid = request.POST.get("pid")
+        models.ALabeledimage.objects.get(id=pid).delete()
+        data = {"class":"success","tip":f"成功删除解剖标注{pid}"}
+        return HttpResponse(json.dumps(data))
