@@ -34,4 +34,6 @@ urlpatterns = [
     path('get_adetail/',get_adetail),
     path('detail_del/',detail_del),
     path('adetail_del/',adetail_del),
+    path('get_hos/',get_hos),
+    path('get_doc/',get_doc),
 ]

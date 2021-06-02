@@ -78,7 +78,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="sex">患者性别</label>
-            <select class="form-control" style="width: 200px;" id="sex" list="sex_list" name='sex'>
+            <select class="form-control" style="width: 200px;" id="sex" name='sex'>
                 <option value="">全部</option>
                 <option>男</option>
                 <option>女</option>
@@ -103,33 +103,9 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="hospital">就诊医院</label>
-            <input class="form-control" style="width: 200px;" type="text" id="hospital_name" list="hos_list" name='hospital' placeholder="请选择就诊医院">
-            <datalist id="hos_list">
-                <option>邵逸夫医院</option>
-                <option>浙江大学医学院第二附属医院</option>
-                <option>宁波大学附属医院</option>
-                <option>上虞人民医院</option>
-                <option>浙江省中医院</option>
-                <option>杭州市第一人民医院</option>
-                <option>台州医院</option>
-                <option>丽水中心医院</option>
-                <option>余姚人民医院</option>
-                <option>宁波李惠利东部医院</option>
-                <option>瑞安人民医院</option>
-                <option>福建省立医院</option>
-                <option>德清医院</option>
-                <option>丽水人民医院</option>
-                <option>山西省人民医院</option>
-                <option>湖州人民医院</option>
-                <option>安贞医院</option>
-                <option>嘉兴市第一医院</option>
-                <option>西安市中心医院</option>
-                <option>龙游县人民医院</option>
-                <option>兰州二院</option>
-                <option>金华市中心医院</option>
-                <option>上海市肿瘤医院宁波病理中心</option>
-                <option>乐清人民医院</option>
-            </datalist>
+            <select class="form-control hospital" style="width: 200px;" id="hospital_name" name='hospital'>
+                <option value="">全部</option>
+            </select>
         </div>
     </div>
 </div>
@@ -145,27 +121,9 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor_name">标注疾病的医生</label>
-            <input class="form-control" style="width: 200px;" type="text" id="doctor_name" list="named_list" name='doctor_name' placeholder="请选择医生姓名">
-            <datalist id="named_list">
-                <option>陈飞</option>
-                <option>胡伟玲</option>
-                <option>杨远航</option>
-                <option>张旭</option>
-                <option>郑文芳</option>
-                <option>胡梦佳</option>
-                <option>余涛</option>
-                <option>陈睿</option>
-                <option>章鑫森</option>
-                <option>李晶晶</option>
-                <option>林讷</option>
-                <option>鄢雪辉</option>
-                <option>吕凯琪</option>
-                <option>钟兴伟</option>
-                <option>刘志红</option>
-                <option>李均</option>
-                <option>杜平</option>
-                <option>张哲</option>
-            </datalist>
+            <select class="form-control doctor" style="width: 200px;" id="doctor_name" name='doctor_name'>
+                <option value="">全部</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="d_type">疾病标注类型</label>
@@ -182,7 +140,9 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor_a">标注解剖的医生</label>
-            <input class="form-control" style="width: 200px;" type="text" id="doctor_a" list="named_list" name='doctor_a' placeholder="请选择医生姓名">
+            <select class="form-control doctor" style="width: 200px;" id="doctor_a" name='doctor_a'>
+                <option value="">全部</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="a_type">解剖标注类型</label>
@@ -253,7 +213,9 @@
                         </div>
                         <div class="form-group">
                             <label for="hos_add" class="col-sm-4 control-label">就诊医院：</label>
-                            <input type="text" id="hos_add" class="form-control" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 220px;" required>
+                            <select id="hos_add" class="form-control hospital" name="hos" style="width: 220px;">
+                                <option value="">全部</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -314,7 +276,9 @@
                 </div>
                 <div class="form-group">
                     <label for="hos_edit" class="col-sm-4 control-label">就诊医院：</label>
-                    <input type="text" id="hos_edit" class="form-control" placeholder="输入就诊医院" name="hos" list="hos_list" value="" style="width: 220px;" required>
+                    <select id="hos_edit" class="form-control hospital" name="hos" style="width: 220px;">
+                        <option value="">全部</option>
+                    </select>
                 </div>
             </div>
             <div class="col-md-6">

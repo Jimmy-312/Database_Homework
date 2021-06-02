@@ -7,6 +7,8 @@
     <title>医疗管理系统</title>
 </head>
 <body style="padding-top: 70px;padding-bottom: 70px">
+    <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
 <nav class="navbar navbar-inverse navbar-fixed-top ">
     <div class="container navbar-left" style="width: 30%;">
         <div class="navbar-header">
@@ -85,11 +87,13 @@
                 </div><br>
                 <div class="form-group">
                     <label for="age" class="col-sm-4 control-label">年&nbsp&nbsp&nbsp&nbsp龄：</label>
-                    <input class="form-control" type="number" id="age" name="age" min=0 max=120 value='{{obj.age}}' style="width: 200px;" required>
+                    <input class="form-control" type="number" id="age" name="age" min=0 max=120 value='{{obj.age}}' placeholder="您的年龄" style="width: 200px;" required>
                 </div> <br>
                 <div class="form-group">
                     <label for="hos" class="col-sm-4 control-label">医&nbsp&nbsp&nbsp&nbsp院：</label>
-                    <input class="form-control" style="width: 200px;"  type="text" id="hos" name="hos" placeholder="输入所在医院" list="hos_list" value='{{obj.hos}}' required>
+                    <select class="form-control hospital" style="width: 200px;" id="hos" name="hos" required>
+                        <option value="">请选择所在医院</option>
+                    </select>
                 </div><br>
                 <div class="form-group">
                     <label for="pwd" class="col-sm-4 control-label">科&nbsp&nbsp&nbsp&nbsp室：</label>
@@ -120,32 +124,6 @@
         </div>
         {%endif%}
 </div>
-<datalist id="hos_list">
-    <option>邵逸夫医院</option>
-    <option>浙江大学医学院第二附属医院</option>
-    <option>宁波大学附属医院</option>
-    <option>上虞人民医院</option>
-    <option>浙江省中医院</option>
-    <option>杭州市第一人民医院</option>
-    <option>台州医院</option>
-    <option>丽水中心医院</option>
-    <option>余姚人民医院</option>
-    <option>宁波李惠利东部医院</option>
-    <option>瑞安人民医院</option>
-    <option>福建省立医院</option>
-    <option>德清医院</option>
-    <option>丽水人民医院</option>
-    <option>山西省人民医院</option>
-    <option>湖州人民医院</option>
-    <option>安贞医院</option>
-    <option>嘉兴市第一医院</option>
-    <option>西安市中心医院</option>
-    <option>龙游县人民医院</option>
-    <option>兰州二院</option>
-    <option>金华市中心医院</option>
-    <option>上海市肿瘤医院宁波病理中心</option>
-    <option>乐清人民医院</option>
-</datalist>
-<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/index.js"></script>
 </body>
+</html>

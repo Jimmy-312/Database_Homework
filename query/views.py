@@ -66,6 +66,21 @@ def mainpage(request):
     return render(request,'query/main.html')
 
 @csrf_exempt
+def get_hos(request):
+    if request.method=="POST":
+        hos = models.HospitalRecord.objects.all()
+        data = [i.institutename for i in hos]
+        return HttpResponse(json.dumps(data))
+
+@csrf_exempt
+@login_required
+def get_doc(request):
+    if request.method=="POST":
+        doctor = models.User.objects.all()
+        data = [i.username for i in doctor]
+        return HttpResponse(json.dumps(data))
+
+@csrf_exempt
 @login_required
 def get_patient(request):
     if request.method=='POST':

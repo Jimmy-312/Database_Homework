@@ -1,4 +1,39 @@
-$.selectpage = function(num){
+
+$.getHospital = function () {
+    $.ajax({
+        url:'/get_hos/',
+        type:'POST',
+        success: function(data){
+            data = JSON.parse(data)
+            var st=''
+            for (var i = 0; i < data.length; i++){
+                st = st + '<option>' + data[i] + '</option>\n'
+            }
+            //console.log(st)
+            $(".hospital").append(st)
+        },
+    })
+}
+$.getHospital()
+
+$.getDoc = function () {
+    $.ajax({
+        url:'/get_doc/',
+        type:'POST',
+        success: function(data){
+            data = JSON.parse(data)
+            var st=''
+            for (var i = 0; i < data.length; i++){
+                st = st + '<option>' + data[i] + '</option>\n'
+            }
+            //console.log(st)
+            $(".doctor").append(st)
+        },
+    })
+}
+$.getDoc()
+
+$.selectpage = function (num) {
     $('.page'+pnow).hide();
     $("#ap"+pnow).attr("class","lpage")
     pnow=num;
@@ -70,6 +105,7 @@ $("#add_form").submit(function() {
                      return key == this.name;
                  }).val(data[key]);
                  $("#sex_edit").val(data.sex)
+                 $("#hos_edit").val(data.hos)
              });
          }
      })
