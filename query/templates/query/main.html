@@ -11,7 +11,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top ">
     <div class="container navbar-left" style="width: 30%;">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/main/">医疗管理系统</a>
+            <a class="navbar-brand" style="color: azure;" href="/main/">医疗管理系统</a>
             <!--<p class="navbar-text">患者信息查询</p>-->
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -72,8 +72,41 @@
     </div>
     <div class="panel panel-default" style="width: 500px;height: 360px;margin-left:50px;margin-top: 50px;">
         <div class="panel-heading"><h3 class="panel-title">个人信息</h3></div>
-        <div class="panel-body" style="text-align: center;">
-            {{ request.user.first_name }}, 欢迎您！
+        <div class="panel-body">
+            <div class="col-md-4" style="margin-top: 10px;margin-left: 10px;">
+                <!-- <a class="thumbnail" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" placement="top" title="我是谁？" data-content="我只会心疼giegie~"> -->
+                <a class="thumbnail">    
+                    <img src="/static/img/tou.jpg">
+                </a>
+            </div>
+            <div class="form-horizontal col-md-7">
+                <div class="form-group" style="margin-top:7px;text-align: center;">
+                    <label class="col-sm-3 control-label">姓名</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static" id="info_name"></p>
+                    </div><br>
+
+                    <label class="col-sm-3 control-label">性别</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static" id="info_gender"></p>
+                    </div><br>
+
+                    <label class="col-sm-3 control-label">年龄</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static" id="info_age"></p>
+                    </div><br>
+
+                    <label class="col-sm-3 control-label">医院</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static" id="info_hos"></p>
+                    </div><br>
+
+                    <label class="col-sm-3 control-label">科室</label>
+                    <div class="col-sm-9">
+                        <p class="form-control-static" id="info_dep"></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -82,5 +115,6 @@
 
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="/static/plugins/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/main.js"></script>
 </body>
 </html>

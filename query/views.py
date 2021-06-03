@@ -64,6 +64,17 @@ def logout_d(request):
     logout(request)
     return HttpResponseRedirect("/")
 
+@csrf_exempt
+@login_required
+def getuser(request):
+    if request.method == "POST":
+        userid = request.user
+        user = models.User.objects.get(userid=userid)
+        hos = models.HospitalRecord.objects.get(instituteid=user.hospitalid).institutename
+
+        data = {'id':user.userid,"name":user.username,"age":user.age,"gender":user.gender,"hos":hos,"dep":user.departmentid}
+        return HttpResponse(json.dumps(data))
+
 @login_required
 def mainpage(request):
     #userid = request.user
