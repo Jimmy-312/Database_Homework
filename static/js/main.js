@@ -12,7 +12,42 @@ $.getUser = function () {
             $("#info_age").text(userinfo.age)
             $("#info_hos").text(userinfo.hos)
             $("#info_dep").text(userinfo.dep)
+            $("#topname").text(userinfo.name+",欢迎您")
         }
     })    
 }
 $.getUser()
+$.edituser = function () {
+    $(".edit").attr("type", "text")
+    $("#edit_sex").attr("style","height: 30px;width: 150px;")
+    $(".display").attr("hidden", "")
+    $(".bzd").removeAttr("style")//"margin-top: -10px;"
+    $("#edit_s").attr("style", "display:none;")
+    $("#edit_p").removeAttr("style")
+
+    $("#edit_name").val(userinfo.name)
+    $("#edit_sex").val(userinfo.gender)
+    $("#edit_age").val(userinfo.age)
+    $("#edit_hos").val(userinfo.hos)
+    $("#edit_dep").val(userinfo.dep)
+}
+
+$("#edit_user").submit(function () {
+    $.ajax({
+        url: "/edit_user/",
+        type: "POST",
+        data: $("#edit_user").serialize(),
+        success: function (data) {
+            data = JSON.parse(data)
+            console.log(data)
+            $.getUser()
+            $(".edit").attr("type", "hidden")
+            $("#edit_sex").attr("style","display:none;")
+            $(".display").removeAttr("hidden")
+            $(".bzd").attr("style", "margin-top: -10px;")
+            $("#edit_p").attr("style", "display:none;")
+            $("#edit_s").removeAttr("style")
+        }
+    })
+    return false;
+})

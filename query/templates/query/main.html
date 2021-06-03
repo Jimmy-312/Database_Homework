@@ -31,7 +31,7 @@
     <div class="container navbar-right" style="width: 20%;margin-right: 20px;">
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li style="margin-right: 20px;"><p class="lip">{{request.user.first_name}},欢迎您</p></li>
+                <li style="margin-right: 20px;"><p class="lip" id="topname">{{request.user.first_name}},欢迎您</p></li>
                 <li><a href="/logout/">退出</a></li>
             </ul>
         </div>
@@ -70,42 +70,59 @@
         <p>速来！！！</p>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">了解更多</a></p>
     </div>
-    <div class="panel panel-default" style="width: 500px;height: 360px;margin-left:50px;margin-top: 50px;">
+    <div class="panel panel-default" style="width: 500px;height: 330px;margin-left:50px;margin-top: 50px;">
         <div class="panel-heading"><h3 class="panel-title">个人信息</h3></div>
         <div class="panel-body">
-            <div class="col-md-4" style="margin-top: 10px;margin-left: 10px;">
+            <div class="col-md-4" style="margin-top: 10px;margin-left: 10px;text-align: center;">
                 <!-- <a class="thumbnail" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" placement="top" title="我是谁？" data-content="我只会心疼giegie~"> -->
                 <a class="thumbnail">    
                     <img src="/static/img/tou.jpg">
                 </a>
+                <div style="margin-top: 40px;">
+                <span class="label label-primary">普通用户</span></div>
             </div>
-            <div class="form-horizontal col-md-7">
-                <div class="form-group" style="margin-top:7px;text-align: center;">
-                    <label class="col-sm-3 control-label">姓名</label>
-                    <div class="col-sm-9">
-                        <p class="form-control-static" id="info_name"></p>
-                    </div><br>
+            <div class="col-md-7">
+                <form class="form-horizontal" id="edit_user">
+                <div style="margin-top:7px;margin-left: 35px;text-align: center;">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">姓名</label>
+                        <input type="hidden" class="form-control edit" id="edit_name" name="name" style="height: 30px;width: 150px;" required>
+                        <p class="form-control-static display" id="info_name"></p>
+                    </div>
 
-                    <label class="col-sm-3 control-label">性别</label>
-                    <div class="col-sm-9">
-                        <p class="form-control-static" id="info_gender"></p>
-                    </div><br>
+                    <div class="form-group bzd" style="margin-top: -10px;">
+                        <label class="col-sm-3 control-label">性别</label>
+                        <select class="form-control edit" id="edit_sex" name="sex" style="display:none;">
+                            <option>男</option>    
+                            <option>女</option>
+                        </select>
+                        <p class="form-control-static display" id="info_gender"></p>
+                    </div>
 
-                    <label class="col-sm-3 control-label">年龄</label>
-                    <div class="col-sm-9">
-                        <p class="form-control-static" id="info_age"></p>
-                    </div><br>
+                    <div class="form-group bzd" style="margin-top: -10px;">
+                        <label class="col-sm-3 control-label">年龄</label>
+                        <input type="hidden" class="form-control edit" id="edit_age" name="age" style="height: 30px;width: 150px;" required>
+                        <p class="form-control-static display" id="info_age"></p>
+                    </div>
 
-                    <label class="col-sm-3 control-label">医院</label>
-                    <div class="col-sm-9">
-                        <p class="form-control-static" id="info_hos"></p>
-                    </div><br>
+                    <div class="form-group bzd" style="margin-top: -10px;">
+                        <label class="col-sm-3 control-label">医院</label>
+                        <input type="hidden" class="form-control edit" id="edit_hos" name="hos" style="height: 30px;width: 150px;" required>
+                        <p class="form-control-static display" id="info_hos"></p>
+                    </div>
 
-                    <label class="col-sm-3 control-label">科室</label>
-                    <div class="col-sm-9">
-                        <p class="form-control-static" id="info_dep"></p>
+                    <div class="form-group bzd" style="margin-top: -10px;">
+                        <label class="col-sm-3 control-label">科室</label>
+                        <input type="hidden" class="form-control edit" id="edit_dep" name="dep" style="height: 30px;width: 150px;" required>
+                        <p class="form-control-static display" id="info_dep"></p>
                     </div>
                 </div>
+                
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" id="edit_p" style="display: none;" class="btn btn-primary">更新个人信息</button>
+            </form> 
+                <button type="button" id="edit_s" class="btn btn-info" onclick="$.edituser()">修改个人信息</button>
             </div>
         </div>
     </div>

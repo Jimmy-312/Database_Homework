@@ -75,6 +75,24 @@ def getuser(request):
         data = {'id':user.userid,"name":user.username,"age":user.age,"gender":user.gender,"hos":hos,"dep":user.departmentid}
         return HttpResponse(json.dumps(data))
 
+
+@csrf_exempt
+@login_required
+def edituser(request):
+    if request.method == "POST":
+        obj = request.POST
+        name = obj.get("name")
+        sex = obj.get("sex")
+        age = obj.get("age")
+        hos = obj.get("hos")
+        dep = obj.get("dep")
+
+        hosid = models.HospitalRecord.objects.get(institutename=hos).instituteid
+        models.AuthUser.objects.filter(username=request.user).update(first_name=name)
+        models.User.objects.filter(userid=request.user).update(username=name,gender=sex,age=age,hospitalid=hosid,departmentid=dep)
+        data = {"class":"success"}
+        return HttpResponse(json.dumps(data))
+
 @login_required
 def mainpage(request):
     #userid = request.user
