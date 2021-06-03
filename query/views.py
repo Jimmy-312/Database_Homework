@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@csrf_exempt
 def index(request):
     next = request.GET.get('next', '/')
     if request.method=='POST':
@@ -22,9 +23,11 @@ def index(request):
             logininfo = authenticate(username=user, password=pwd)
             if logininfo != None:
                 login(request,logininfo)
-                return HttpResponseRedirect(next)
+                data = {"tip":"登录成功，正在跳转...","class":"success","url":next}
+                return HttpResponse(json.dumps(data))
             else:
-                return render(request,'query/index.html',{"obj":obj,"error":"用户名或密码错误！","st":"l"})
+                data = {"tip":"用户名或密码错误！","class":"danger"}
+                return HttpResponse(json.dumps(data))
             #print(request.user.is_authenticated)
         else:
             user = obj.get("user")
@@ -40,19 +43,22 @@ def index(request):
             hosid = models.HospitalRecord.objects.filter(institutename=hos)
             state = models.User.objects.filter(userid__exact=user)
             if len(state)!=0:
-                return render(request,'query/index.html',{"obj":obj,"error":"用户名重复，请重试！","st":"r"})
+                data = {"tip":"用户名重复，请重试！","class":"danger"}
+                return HttpResponse(json.dumps(data))
             elif len(hosid)==0:
-                return render(request,'query/index.html',{"obj":obj,"error":"医院未涵盖，请重试！","st":"r"})
+                data = {"tip":"医院未涵盖，请重试！","class":"danger"}
+                return HttpResponse(json.dumps(data))
             else:
                 models.User.objects.create(userid=user,age=age,departmentid=dep,username=name,gender=sex,hospitalid=hosid[0].instituteid)
                 User.objects.create_user(username=user, password=pwd,first_name=name)
-                return render(request,'query/index.html',{"tip":"注册成功,请登录!","st":"l"})
+                data = {"tip":"注册成功,请登录!","class":"success"}
+                return HttpResponse(json.dumps(data))
     else:
         if request.user.is_authenticated:
             return HttpResponseRedirect("/main/")
         if next != '/':
             return render(request,'query/index.html',{"st":"l","error":"请先登录！"})
-        return render(request,'query/index.html',{"st":"l"})        
+        return render(request,'query/index.html')        
 
 def logout_d(request):
     logout(request)
