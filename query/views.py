@@ -65,6 +65,17 @@ def logout_d(request):
     return HttpResponseRedirect("/")
 
 @csrf_exempt
+def getinfo(request):
+    doc = len(models.User.objects.all())
+    hos = len(models.HospitalRecord.objects.all())
+    pat = len(models.Patientbasicinfos.objects.all())
+    dis = len(models.DLabeledimage.objects.all())
+    bz = len(models.ALabeledimage.objects.all())
+
+    data = {"doc":doc,"hos":hos,"pat":pat,"dis":dis,"bz":bz}
+    return HttpResponse(json.dumps(data))
+
+@csrf_exempt
 @login_required
 def getuser(request):
     if request.method == "POST":

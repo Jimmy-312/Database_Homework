@@ -27,6 +27,21 @@ $.getHospital = function () {
 }
 $.getHospital()
 
+$.getinfo = function () {
+    $.ajax({
+        url:'/get_info/',
+        type:'POST',
+        success: function(data){
+            data = JSON.parse(data)
+            $("#doc_num").text(data.doc)
+            $("#pat_num").text(data.pat)
+            $("#hos_num").text(data.hos)
+            $("#dis_num").text(data.dis)
+            $("#jp_num").text(data.bz)
+        },
+    })
+}
+$.getinfo()
 $.getDoc = function () {
     $.ajax({
         url:'/get_doc/',
@@ -166,7 +181,8 @@ $.delpa = function (pid) {
  
  var page=1
  var pnow=1
- $("#query").submit($.getContent = function() {
+$("#query").submit($.getContent = function () {
+    $.getinfo()
      $("#bquery").attr("disabled","disabled")
      $("#bquery").val("查询中")
      $.ajax({
