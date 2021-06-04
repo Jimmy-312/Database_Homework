@@ -1,4 +1,32 @@
-    $.selectpage = function(num){
+var userinfo=''
+$.getUser = function () {
+    $.ajax({
+        url: "/getUser/",
+        method: "POST",
+        success: function (data) {
+            data = JSON.parse(data)
+            userinfo = data            
+        }
+    })    
+}
+$.getUser()
+$.getDoc = function () {
+    $.ajax({
+        url:'/get_doc/',
+        type:'POST',
+        success: function(data){
+            data = JSON.parse(data)
+            var st=''
+            for (var i = 0; i < data.length; i++){
+                st = st + '<option>' + data[i] + '</option>\n'
+            }
+            //console.log(st)
+            $(".doctor").append(st)
+        },
+    })
+}
+$.getDoc()
+$.selectpage = function (num) {
         $('.page'+pnow).hide();
         $("#ap"+pnow).attr("class","lpage")
         pnow=num;
@@ -30,12 +58,22 @@
                          return key == this.name;
                      }).val(data[key]);
                      $("#bztype_edit").val(data.bztype)
+                     $("#doctor_edit").val(data.doctor)
                  });
              }
          })
      };
 
-     $("#edit_form").submit(function() {
+$("#edit_form").submit(function () {
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $('#editbz').modal('hide')
+        $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
          $.ajax({
              url:'/'+type+'_add/?me=edit',
              type:'POST',
@@ -55,7 +93,16 @@
          return false;
      })
 
-    $("#add_form").submit(function() {
+$("#add_form").submit(function () {
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $('#addbz').modal('hide')
+        $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
          $.ajax({
              url:'/'+type+'_add/',
              type:'POST',
@@ -75,7 +122,15 @@
          return false;
      })
 
-     $.delbz = function(pid){
+$.delbz = function (pid) {
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
          $.ajax({
              url:'/'+type+'_del/',
              type:'POST',

@@ -86,27 +86,9 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor">标注医生</label>
-            <input class="form-control" style="width: 200px;" type="text" id="doctor_name" list="type_list" name='doctor_name' placeholder="请输入医生姓名">
-            <datalist id="type_list">
-                <option>陈飞</option>
-                <option>胡伟玲</option>
-                <option>杨远航</option>
-                <option>张旭</option>
-                <option>郑文芳</option>
-                <option>胡梦佳</option>
-                <option>余涛</option>
-                <option>陈睿</option>
-                <option>章鑫森</option>
-                <option>李晶晶</option>
-                <option>林讷</option>
-                <option>鄢雪辉</option>
-                <option>吕凯琪</option>
-                <option>钟兴伟</option>
-                <option>刘志红</option>
-                <option>李均</option>
-                <option>杜平</option>
-                <option>张哲</option>
-            </datalist>
+            <select class="form-control doctor" style="width: 200px;" id="doctor_name" name='doctor_name'>
+                <option value="">全部</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="illness_type">{{ title }}类型</label>
@@ -145,7 +127,9 @@
                         </div>
                         <div class="form-group">
                             <label for="sex_add" class="col-sm-4 control-label">标注医生：</label>
-                            <input type="text" class="form-control" id="doctor_add" name="doctor" list="type_list" placeholder="请输入标注医生" style="width: 220px;" required>
+                            <select class="form-control doctor" id="doctor_add" name="doctor" style="width: 220px;">
+                                <option value="">全部</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="age_add" class="col-sm-4 control-label">区域编号：</label>
@@ -198,7 +182,9 @@
                         </div>
                         <div class="form-group">
                             <label for="sex_edit" class="col-sm-4 control-label">标注医生：</label>
-                            <input type="text" class="form-control" id="doctor_edit" name="doctor" list="type_list" placeholder="请输入标注医生" style="width: 220px;" required>
+                            <select class="form-control doctor" id="doctor_edit" name="doctor" style="width: 220px;">
+                                <option value="">全部</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="age_edit" class="col-sm-4 control-label">区域编号：</label>

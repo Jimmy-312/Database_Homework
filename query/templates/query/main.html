@@ -78,8 +78,9 @@
                 <a class="thumbnail">    
                     <img src="/static/img/tou.jpg">
                 </a>
-                <div style="margin-top: 40px;">
-                <span class="label label-primary">普通用户</span></div>
+                <div style="margin-top: 35px;">
+                <h3><span id="user_level" class="label label-default">普通用户</span></h3>
+                </div>
             </div>
             <div class="col-md-7">
                 <form class="form-horizontal" id="edit_user">
@@ -107,7 +108,9 @@
 
                     <div class="form-group bzd" style="margin-top: -10px;">
                         <label class="col-sm-3 control-label">医院</label>
-                        <input type="hidden" class="form-control edit" id="edit_hos" name="hos" style="height: 30px;width: 150px;" required>
+                        <select class="form-control edit hospital" id="edit_hos" name="hos" style="display:none;">
+                        
+                        </select>
                         <p class="form-control-static display" id="info_hos"></p>
                     </div>
 
@@ -139,7 +142,7 @@
         </div>
         <form id="edit_form" class="form-horizontal">
         <div class="modal-body" style="text-align: center;">
-            
+            <div style="margin-left: 50px;">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">旧密码</label>
                     <input type="password" class="form-control" id="edit_old" name="old" style="width: 220px;" required>
@@ -154,6 +157,7 @@
                     <label class="col-sm-3 control-label">重复新密码</label>
                     <input type="password" class="form-control" id="edit_newr" name="newr" style="width: 220px;" oninput="$.checkpass()" required>
                 </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

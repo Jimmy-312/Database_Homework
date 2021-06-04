@@ -1,4 +1,15 @@
-
+var userinfo=''
+$.getUser = function () {
+    $.ajax({
+        url: "/getUser/",
+        method: "POST",
+        success: function (data) {
+            data = JSON.parse(data)
+            userinfo = data            
+        }
+    })    
+}
+$.getUser()
 $.getHospital = function () {
     $.ajax({
         url:'/get_hos/',
@@ -52,14 +63,22 @@ $.nextpage = function(num){
     $('.page'+pnow).show();
 }
 
-$("#add_form").submit(function() {
+$("#add_form").submit(function () {
+    //console.log(userinfo.level)
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $('#addpatient').modal('hide')
+        $("#tip_c").text("权限不足，请联系管理员！")
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
      $.ajax({
          url:'/patient_add/',
          type:'POST',
          data:$('#add_form').serialize(),
          success: function(data){
              data = JSON.parse(data)
-             $("#tip").attr("class","alert alert-"+data.class)
              if(data.class == "success"){
                  $("#add_form")[0].reset()
              }
@@ -72,7 +91,17 @@ $("#add_form").submit(function() {
      return false;
  })
 
- $("#edit_form").submit(function() {
+$("#edit_form").submit(function () {
+    //console.log(userinfo)
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $('#editpatient').modal('hide')
+        $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
      $.ajax({
          url:'/patient_add/?me=edit',
          type:'POST',
@@ -111,7 +140,15 @@ $("#add_form").submit(function() {
      })
  };
 
- $.delpa = function(pid){
+$.delpa = function (pid) {
+    if (userinfo.level!=true) {
+        $("#tip").attr("class","alert alert-warning")
+        $("#tip").removeAttr("hidden")
+        $('#addpatient').modal('hide')
+        $("#tip_c").text("权限不足，请联系管理员！")
+        setTimeout(function(){$("#tip").attr("hidden","")},5000);
+        return false;
+    }
     $.ajax({
          url:'/del_patient/',
          type:'POST',
