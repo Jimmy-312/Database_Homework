@@ -1,4 +1,7 @@
-var userinfo=''
+$(function () {
+    $('[data-toggle="popover"]').popover()
+  })
+var userinfo = ''
 $.getUser = function () {
     $.ajax({
         url: "/getUser/",

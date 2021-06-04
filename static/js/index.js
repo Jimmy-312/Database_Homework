@@ -1,3 +1,7 @@
+
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})
 $.getHospital = function () {
     $.ajax({
         url:'/get_hos/',
