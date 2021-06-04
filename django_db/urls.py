@@ -38,4 +38,5 @@ urlpatterns = [
     path('get_doc/',get_doc),
     path('getUser/',getuser),
     path('edit_user/',edituser),
+    path('edit_pass/',editpass),
 ]

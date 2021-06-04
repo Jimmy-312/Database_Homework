@@ -24,6 +24,8 @@ $.edituser = function () {
     $(".bzd").removeAttr("style")//"margin-top: -10px;"
     $("#edit_s").attr("style", "display:none;")
     $("#edit_p").removeAttr("style")
+    $("#edit_pass").attr("style", "display:none;")
+    
 
     $("#edit_name").val(userinfo.name)
     $("#edit_sex").val(userinfo.gender)
@@ -47,7 +49,36 @@ $("#edit_user").submit(function () {
             $(".bzd").attr("style", "margin-top: -10px;")
             $("#edit_p").attr("style", "display:none;")
             $("#edit_s").removeAttr("style")
+            $("#edit_pass").attr("style","margin-left: 10px;")
         }
     })
     return false;
 })
+
+$("#edit_form").submit(function () {
+    if ($("#edit_new").val() != $("#edit_newr").val()) {
+        return false;
+    }
+    $.ajax({
+        url: "/edit_pass/",
+        type: "POST",
+        data: $("#edit_form").serialize(),
+        success: function (data) {
+            data = JSON.parse(data)
+            //console.log(data)
+            $("#edit_form")[0].reset()
+            $("#editpass").modal("hide")
+        }
+    })
+    return false;
+})
+
+$.checkpass = function () {
+    if ($("#edit_new").val() != $("#edit_newr").val()) {
+        $("#edit_newr_d").attr("class", "form-group has-error")
+        $("#edit_sub").attr("disabled","disabled")
+    } else {
+        $("#edit_newr_d").attr("class", "form-group")
+        $("#edit_sub").removeAttr("disabled")
+    }
+}

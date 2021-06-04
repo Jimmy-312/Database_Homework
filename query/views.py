@@ -75,6 +75,24 @@ def getuser(request):
         data = {'id':user.userid,"name":user.username,"age":user.age,"gender":user.gender,"hos":hos,"dep":user.departmentid}
         return HttpResponse(json.dumps(data))
 
+@csrf_exempt
+@login_required
+def editpass(request):
+    if request.method == "POST":
+        old = request.POST.get("old")
+        new = request.POST.get("new")
+
+        user = authenticate(username=request.user, password=old)
+        if user == None:
+            data = {"class":"danger"}
+        else:
+            user.set_password(new)
+            user.save()
+            login(request,user)
+            data = {"class":"success"}
+        
+        return HttpResponse(json.dumps(data))
+        
 
 @csrf_exempt
 @login_required
