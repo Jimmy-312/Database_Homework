@@ -82,7 +82,7 @@ def getuser(request):
         userid = request.user
         user = models.User.objects.get(userid=userid)
         hos = models.HospitalRecord.objects.get(instituteid=user.hospitalid).institutename
-        level = request.user.is_superuser
+        level = request.user.is_staff
 
         data = {'id':user.userid,"name":user.username,"age":user.age,"gender":user.gender,"hos":hos,"dep":user.departmentid,"level":level}
         return HttpResponse(json.dumps(data))

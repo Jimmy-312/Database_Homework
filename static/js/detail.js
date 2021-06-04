@@ -45,7 +45,8 @@ $.selectpage = function (num) {
         $("#ap"+pnow).attr("class","lpage")
         pnow+=num;
         $("#ap"+pnow).attr("class","active lpage")
-        $('.page'+pnow).show();
+        $('.page' + pnow).show();
+        $("#over30").text("第"+pnow+"页")
     }
 
     $.getbz = function(ppid) {
@@ -196,7 +197,16 @@ $.delbz = function (pid) {
                 //console.log(page)
 
                 st=''
-                $(".lpage").remove()
+                 $(".lpage").remove()
+                 if (page > 30) {
+                    st+='<li class="lpage"><a id="over30">第'+pnow+'页</a></li>'
+                    st+='<li class="lpage">\
+                    <a href="javascript:$.nextpage(1)" aria-label="Next">\
+                      <span aria-hidden="true">&raquo;</span>\
+                    </a>\
+                  </li>'
+                  $(".pagination").append(st)
+                 }else{
                 for(var i=1;i<page+1;i++){
                     st+='<li class="lpage" id="ap'+i+'"><a href="javascript:$.selectpage('+i+')">'+i+'</a></li>'
                 }
@@ -206,7 +216,8 @@ $.delbz = function (pid) {
             </a>\
           </li>'
                 $(".pagination").append(st)
-                $("#ap1").attr("class","active lpage")
+                     $("#ap1").attr("class", "active lpage")
+                 }
                 $("#ptname").text(data.name)
             },
             error: function(data){

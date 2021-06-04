@@ -238,7 +238,7 @@ $("#query").submit($.getContent = function () {
             console.log(page)
 
             st=''
-            $(".lpage").remove()
+             $(".lpage").remove()
             for(var i=1;i<page+1;i++){
                 st+='<li class="lpage" id="ap'+i+'"><a href="javascript:$.selectpage('+i+')">'+i+'</a></li>'
             }
