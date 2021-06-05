@@ -135,7 +135,6 @@ class DLabeledimage(models.Model):
     usertype = models.CharField(db_column='UserType', max_length=10)  # Field name made lowercase.
     userid_check_1 = models.CharField(db_column='UserID_Check_1', max_length=45, blank=True, null=True)  # Field name made lowercase.
     userid_check_2 = models.CharField(db_column='UserID_Check_2', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    createdate = models.DateTimeField(db_column='CreateDate', blank=True, null=True)  # Field name made lowercase.
     patientid = models.CharField(db_column='PatientID', max_length=45, blank=True, null=True)  # Field name made lowercase.
     createdby = models.CharField(db_column='CreatedBy', max_length=45)  # Field name made lowercase.
 
