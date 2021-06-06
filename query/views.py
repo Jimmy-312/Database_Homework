@@ -211,6 +211,7 @@ def query_patient(request):
         pagee = obj.get("agee")
         psex = obj.get("sex")
         hospital = obj.get("hospital")
+        patientname = obj.get("patientname")
 
         patient_list=[]
         datefrom = datefrom if datefrom.strip() else "1990-01-01"
@@ -277,6 +278,7 @@ def query_patient(request):
             users = users.filter(patientid__in=patientids)
         
         users = users if not pid.strip() else users.filter(id=pid)    
+        users = users if not patientname.strip() else users.filter(patientname=patientname)   
         users = list(users)
         for i in users:
             u_hos = models.HospitalRecord.objects.get(instituteid=i.hospitalid).institutename
@@ -337,7 +339,7 @@ def patient_add(request):
                 data = {"tip":"添加失败，请重试！","class":"danger"}
         else:
             models.Patientbasicinfos.objects.filter(id=id).update(hospitalid=hosid,id=id,gender=sex,age=age,checkdate=date,checknumber=checkid,patientname=name)
-            data = {"tip":f"成功更新患者{name}的信息！","class":"success"}
+            data = {"tip":f"成功更新患者{name}的信息！","class":"success","pid":id,"obj":obj}
         
         return HttpResponse(json.dumps(data))
 

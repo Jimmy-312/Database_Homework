@@ -133,7 +133,17 @@ $("#edit_form").submit(function () {
              $("#tip").removeAttr("hidden")
              $('#editpatient').modal('hide')
              $("#tip_c").text(data.tip)
-             $.getContent()
+             var obj = data.obj
+             $("#row" + data.pid).children().eq(1).text(obj.id)
+             $("#row" + data.pid).children().eq(2).text(obj.pid)
+             $("#row" + data.pid).children().eq(3).text(obj.name)
+             $("#row" + data.pid).children().eq(4).text(obj.sex)
+             $("#row" + data.pid).children().eq(5).text(obj.age)
+             $("#row" + data.pid).children().eq(6).text(obj.hos)
+             $("#row" + data.pid).children().eq(7).text(obj.checkdate)
+             $("#row" + data.pid).children().eq(8).text(obj.checkid)
+
+             //$.getContent()
          },
      });
      return false;
@@ -208,7 +218,7 @@ $("#query").submit($.getContent = function () {
                      page+=1
                  }
                  var pa=data.patient_id[i]
-             st=st+'<tr class="contentcol page'+page+'" hidden>\
+             st=st+'<tr class="contentcol page'+page+'" id="row'+pa[0]+'" hidden>\
     <td style="text-align: center;">\
         <a href="javascript:$('+"'#editpatient'"+').modal('+"'show'"+');$.getPatient('+pa[0]+')">编辑</a>\
         &nbsp;\

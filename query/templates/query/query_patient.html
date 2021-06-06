@@ -69,12 +69,16 @@
 <div class="container-fluid" style="margin: 0 auto;">
 <form id="query" class="form-horizontal">
 <div class="col-md-4">
-<div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
+<div class="panel panel-default" style="width: 480px;height: 450px;margin: 0 auto;">
     <div class="panel-heading"><h3 class="panel-title">基础条件</h3></div>
     <div class="panel-body">
+        <div class="form-group" style="margin-top:20px">
+            <label class="col-sm-4 control-label" for="id_patient">患者ID</label>
+            <input class="form-control" style="width: 200px;" type="text" id="id_patient" name="patientid" placeholder="请输入患者ID" autofocus>
+        </div>
         <div class="form-group">
-            <label class="col-sm-4 control-label" for="id_patient">病人ID</label>
-            <input class="form-control" style="width: 200px;" type="text" id="id_patient" name="patientid" placeholder="请输入病人ID" autofocus>
+            <label class="col-sm-4 control-label" for="name_patient">患者姓名</label>
+            <input class="form-control" style="width: 200px;" type="text" id="name_patient" name="patientname" placeholder="请输入患者姓名">
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="sex">患者性别</label>
@@ -111,10 +115,12 @@
 </div>
 </div>
 <div class="col-md-4">
-        <div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
+        <div class="panel panel-default" style="width: 480px;height: 450px;margin: 0 auto;">
             <div class="panel-heading"><h3 class="panel-title">高级条件</h3></div>
             <div class="panel-body" style="text-align: center;">
-                
+                <div style="margin-top: 10px;margin-bottom: 10px;">
+                <strong>按疾病类型检索</strong>
+            </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="illness_type">疾病类型</label>
             <input class="form-control" style="width: 200px;" type="text" id="illness_type" name="ill_type" placeholder="请输入疾病类型">
@@ -133,6 +139,9 @@
                 <option value="POLYGON">Polygon</option>
                 <option value="HAND">Hand</option>
             </select>
+        </div>
+        <div style="margin-top: 10px;margin-bottom: 10px;">
+            <strong>按解剖类型检索</strong>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="a_type">解剖位置</label>
@@ -158,22 +167,23 @@
     </div>
 </div>
     <div class="col-md-4">
-        <div class="panel panel-default" style="width: 480px;height: 380px;margin: 0 auto;">
+        <div class="panel panel-default" style="width: 480px;height: 450px;margin: 0 auto;">
             <div class="panel-heading"><h3 class="panel-title">信息总览</h3></div>
             <div class="panel-body" style="text-align: center;">
-                <br>
+                <br><br>
+                <p style="font-size: medium;">
                 本医学信息管理系统<br><br>
                 截至目前，共有<br><br>
                 医生&nbsp;<strong id="doc_num">666</strong>&nbsp;名<br><br>
                 患者&nbsp;<strong id="pat_num">666</strong>&nbsp;名<br><br>
                 涵盖医院&nbsp;<strong id="hos_num">666</strong>&nbsp;家<br><br>
                 疾病标注&nbsp;<strong id="dis_num">666</strong>&nbsp;个<br><br>
-                解剖标注&nbsp;<strong id="jp_num">666</strong>&nbsp;个
+                解剖标注&nbsp;<strong id="jp_num">666</strong>&nbsp;个</p>
             </div>
         </div>
     </div>
 </div>
-<div style="text-align: center;margin-top: 20px;">
+<div style="text-align: center;margin-top: 25px;">
 <input class="btn btn-primary" id="bquery" type="submit" value="查询">
 </form>   
 <button class="btn btn-default" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">新增</button>
