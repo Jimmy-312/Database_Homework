@@ -17,6 +17,7 @@ $.getDoc = function () {
     $.ajax({
         url:'/get_doc/',
         type:'POST',
+        async:false,
         success: function(data){
             data = JSON.parse(data)
             var st=''

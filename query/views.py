@@ -462,10 +462,11 @@ def adetail_add(request):
 def query_detail(request):
     if request.method == 'POST':
         obj = request.POST
+        #print(obj)
         id = obj.get('pid')
         #img_id = request.POST.get('img_id')
         dtype = obj.get('bztype')
-        doctor = obj.get('doctor_name')
+        doctor = obj.get('doctor')
         datype = obj.get('da_type')
 
         try:
@@ -526,11 +527,11 @@ def query_detail(request):
 def query_adetail(request):
     if request.method == 'POST':
         obj = request.POST
-        #print(obj)
+        print(obj)
         id = obj.get('pid')
         #img_id = request.POST.get('img_id')
         dtype = obj.get('bztype')
-        doctor = obj.get('doctor_name')
+        doctor = obj.get('doctor')
         datype = obj.get('da_type')
 
         try:

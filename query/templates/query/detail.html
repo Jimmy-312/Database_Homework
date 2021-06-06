@@ -86,7 +86,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor">标注医生</label>
-            <select class="form-control doctor" style="width: 200px;" id="doctor_name" name='doctor_name'>
+            <select class="form-control doctor" style="width: 200px;" id="doctor_name" name='doctor'>
                 <option value="">全部</option>
             </select>
         </div>
@@ -254,23 +254,26 @@
     </tr>  
 </table>
 </div>
+<script type="text/javascript" src="/static/js/detail.js"></script>
 
 <script>
     var page=1
     var pnow=1
     var type="{{type}}"
-    $("#id_patient").val('{{obj.id}}')
-    $("#doctor_name").val('{{obj.doctor}}') 
-    $("#illness_type").val('{{obj.type}}')
-    {% if obj.ptype %}
-    $("#type").val('{{obj.ptype}}')
-    {% endif %}
-</script>
-<script type="text/javascript" src="/static/js/detail.js"></script>
-<script>
-    {% if obj.ptype or obj.id or obj.doctor or obj.type %}
-    $.getContent()
-    {% endif %}
+
+    $.init =function(){
+        $("#id_patient").val('{{obj.id}}')
+        $("#doctor_name").val('{{obj.doctor}}') 
+        $("#illness_type").val('{{obj.type}}')
+        //console.log($("#doctor_name").html())
+        {% if obj.ptype %}
+        $("#type").val('{{obj.ptype}}')
+        {% endif %}
+        {% if obj.ptype or obj.id or obj.doctor or obj.type %}
+        $.getContent()
+        {% endif %}
+    }
+$.init()
 </script>
 </body>
 </html>
