@@ -100,9 +100,11 @@ $("#add_form").submit(function () {
              if(data.class == "success"){
                  $("#add_form")[0].reset()
              }
+             $("#tip").attr("class","alert alert-"+data.class)
              $("#tip").removeAttr("hidden")
              $('#addpatient').modal('hide')
              $("#tip_c").text(data.tip)
+             setTimeout(function(){$("#tip").attr("hidden","")},5000);
              $.getContent()
          },
      });
@@ -133,6 +135,7 @@ $("#edit_form").submit(function () {
              $("#tip").removeAttr("hidden")
              $('#editpatient').modal('hide')
              $("#tip_c").text(data.tip)
+             setTimeout(function(){$("#tip").attr("hidden","")},5000);
              var obj = data.obj
              $("#row" + data.pid).children().eq(1).text(obj.id)
              $("#row" + data.pid).children().eq(2).text(obj.pid)
@@ -220,9 +223,9 @@ $("#query").submit($.getContent = function () {
                  var pa=data.patient_id[i]
              st=st+'<tr class="contentcol page'+page+'" id="row'+pa[0]+'" hidden>\
     <td style="text-align: center;">\
-        <a href="javascript:$('+"'#editpatient'"+').modal('+"'show'"+');$.getPatient('+pa[0]+')">编辑</a>\
+        <a class="btn btn-info" href="javascript:$('+"'#editpatient'"+').modal('+"'show'"+');$.getPatient('+pa[0]+')">编辑</a>\
         &nbsp;\
-        <a href="javascript:$.delpa('+pa[0]+')">删除</a>\
+        <a class="btn btn-danger" href="javascript:$.delpa('+pa[0]+')">删除</a>\
     </td>\
     <td>'+pa[0]+'</td>\
     <td>'+pa[1]+'</td>\

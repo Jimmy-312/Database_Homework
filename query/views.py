@@ -397,7 +397,7 @@ def detail_add(request):
                 data = {"tip":"添加失败，请重试！","class":"danger"}
         else:
             models.DLabeledimage.objects.filter(id=id).update(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-            data = {"tip":f"成功更新疾病标注{id}的信息！","class":"success"}
+            data = {"tip":f"成功更新疾病标注{id}的信息！","class":"success","pid":id,"obj":obj}
         
         return HttpResponse(json.dumps(data))
 
@@ -455,7 +455,7 @@ def adetail_add(request):
                 data = {"tip":"添加失败，请重试！","class":"danger"}
         else:
             models.ALabeledimage.objects.filter(id=id).update(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-            data = {"tip":f"成功更新解剖标注{id}的信息！","class":"success"}
+            data = {"tip":f"成功更新解剖标注{id}的信息！","class":"success","pid":id,"obj":obj}
         
         return HttpResponse(json.dumps(data))
 

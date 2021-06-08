@@ -92,6 +92,16 @@ $("#edit_form").submit(function () {
                  $("#tip").removeAttr("hidden")
                  $('#editbz').modal('hide')
                  $("#tip_c").text(data.tip)
+                 setTimeout(function(){$("#tip").attr("hidden","")},5000);
+                // var obj = data.obj
+                // $("#row" + data.pid).children().eq(1).text(obj.bzid)
+                // $("#row" + data.pid).children().eq(2).text(obj.imageid)
+                // $("#row" + data.pid).children().eq(3).text(obj.bztype)
+                // $("#row" + data.pid).children().eq(4).text(obj.doctor)
+                // $("#row" + data.pid).children().eq(5).text(obj.areaid)
+                // $("#row" + data.pid).children().eq(6).text(obj.name)
+                // $("#row" + data.pid).children().eq(7).text(obj.checkdate)
+                // $("#row" + data.pid).children().eq(8).text(obj.checkid)
                  $.getContent()
              },
          });
@@ -174,11 +184,11 @@ $.delbz = function (pid) {
                          page+=1
                      }
                      var pa=data.data[i]
-                    st+='<tr class="contentcol page'+page+'" hidden>\
+                    st+='<tr class="contentcol page'+page+'" id="'+pa[0]+'" hidden>\
                         <td style="text-align: center;">\
-            <a href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
+            <a class="btn btn-info" href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
             &nbsp;\
-            <a href="javascript:$.delbz('+pa[0]+')">删除</a>\
+            <a class="btn btn-danger" href="javascript:$.delbz('+pa[0]+')">删除</a>\
         </td>\
                         <td>'+pa[0]+'</td>\
                         <td>'+pa[1]+'</td>\
