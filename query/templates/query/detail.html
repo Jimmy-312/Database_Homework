@@ -87,7 +87,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label" for="doctor">标注医生</label>
-            <select class="form-control doctor" style="width: 200px;" id="doctor_name" name='doctor'>
+            <select class="form-control doctorq" style="width: 200px;" id="doctor_name" name='doctor'>
                 <option value="">全部</option>
             </select>
         </div>
@@ -129,12 +129,11 @@
                         <div class="form-group">
                             <label for="sex_add" class="col-sm-4 control-label">标注医生：</label>
                             <select class="form-control doctor" id="doctor_add" name="doctor" style="width: 220px;">
-                                <option value="">全部</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="age_add" class="col-sm-4 control-label">区域编号：</label>
-                            <input type="text" class="form-control" id="area_add" name="areaid" placeholder="请输入区域编号" style="width: 220px;" required>
+                            <label class="col-sm-4 control-label">{{title}}类型：</label>
+                            <input type="text" id="id_add" name="type" class="form-control" placeholder="多个请以,分开" style="width: 220px;" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -151,8 +150,8 @@
                             <input type="text" class="form-control" id="imageid_add" name="imageid" placeholder="请输入图像ID" style="width: 220px;" required>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">标注&nbsp;&nbsp;&nbsp;ID：</label>
-                            <input type="text" id="id_add" name="bzid" class="form-control" placeholder="不填自动生成" style="width: 220px;">
+                            <label for="age_add" class="col-sm-4 control-label">区域编号：</label>
+                            <input type="text" class="form-control" id="area_add" name="areaid" placeholder="请输入区域编号" style="width: 220px;" required>
                         </div>
                     </div>
                 </div>
@@ -184,12 +183,11 @@
                         <div class="form-group">
                             <label for="sex_edit" class="col-sm-4 control-label">标注医生：</label>
                             <select class="form-control doctor" id="doctor_edit" name="doctor" style="width: 220px;">
-                                <option value="">全部</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="age_edit" class="col-sm-4 control-label">区域编号：</label>
-                            <input type="text" class="form-control" id="area_edit" name="areaid" placeholder="请输入区域编号" style="width: 220px;" required>
+                            <label class="col-sm-4 control-label">{{title}}类型：</label>
+                            <input type="text" id="id_add" name="type" class="form-control" placeholder="多个请以,分开" style="width: 220px;" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -206,8 +204,8 @@
                             <input type="text" class="form-control" id="imageid_edit" name="imageid" placeholder="请输入图像ID" style="width: 220px;" readonly>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">标注&nbsp;&nbsp;&nbsp;ID：</label>
-                            <input type="text" id="id_edit" name="bzid" class="form-control" placeholder="不填自动生成" style="width: 220px;" readonly>
+                            <label for="age_edit" class="col-sm-4 control-label">区域编号：</label>
+                            <input type="text" class="form-control" id="area_edit" name="areaid" placeholder="请输入区域编号" style="width: 220px;" readonly>
                         </div>
                     </div>
                 </div>

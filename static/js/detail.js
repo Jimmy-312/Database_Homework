@@ -6,6 +6,7 @@ $.getUser = function () {
     $.ajax({
         url: "/getUser/",
         method: "POST",
+        async:true,
         success: function (data) {
             data = JSON.parse(data)
             userinfo = data            
@@ -17,15 +18,21 @@ $.getDoc = function () {
     $.ajax({
         url:'/get_doc/',
         type:'POST',
-        async:false,
+        async:true,
         success: function(data){
             data = JSON.parse(data)
             var st=''
             for (var i = 0; i < data.length; i++){
                 st = st + '<option>' + data[i] + '</option>\n'
             }
-            //console.log(st)
-            $(".doctor").append(st)
+            console.log(userinfo)
+            if (userinfo.level < 1) {
+                st1 = '<option>' + userinfo.name + '</option>'
+            } else {
+                st1=st
+            }
+            $(".doctorq").append(st)
+            $(".doctor").append(st1)
         },
     })
 }
@@ -50,7 +57,8 @@ $.selectpage = function (num) {
         $("#over30").text("第"+pnow+"页")
     }
 
-    $.getbz = function(ppid) {
+$.getbz = function (ppid) {
+    $("#doctor_edit").removeAttr("readonly")
          $.ajax({
              url:'/get_'+type+'/',
              type:'POST',
@@ -63,6 +71,18 @@ $.selectpage = function (num) {
                          return key == this.name;
                      }).val(data[key]);
                      $("#bztype_edit").val(data.bztype)
+                
+                     if (userinfo.level < 1) {
+                         $("#doctor_edit").html("")
+                         if (userinfo.name != data.doctor) {
+                             $("#doctor_edit").append('<option>' + data.doctor + '</option>')
+                             $("#doctor_edit").attr("readonly", "")
+                         }
+                         else
+                         {
+                            $("#doctor_edit").append('<option>' + userinfo.name + '</option>')
+                             }
+                    }
                      $("#doctor_edit").val(data.doctor)
                  });
              }
@@ -70,7 +90,7 @@ $.selectpage = function (num) {
      };
 
 $("#edit_form").submit(function () {
-    if (userinfo.level!=true) {
+    if (userinfo.level<1 && userinfo.name!=$("#doctor_edit").val()) {
         $("#tip").attr("class","alert alert-warning")
         $("#tip").removeAttr("hidden")
         $('#editbz').modal('hide')
@@ -92,6 +112,7 @@ $("#edit_form").submit(function () {
                  $("#tip").removeAttr("hidden")
                  $('#editbz').modal('hide')
                  $("#tip_c").text(data.tip)
+                 $.getContent()
                  setTimeout(function(){$("#tip").attr("hidden","")},5000);
                 // var obj = data.obj
                 // $("#row" + data.pid).children().eq(1).text(obj.bzid)
@@ -102,22 +123,22 @@ $("#edit_form").submit(function () {
                 // $("#row" + data.pid).children().eq(6).text(obj.name)
                 // $("#row" + data.pid).children().eq(7).text(obj.checkdate)
                 // $("#row" + data.pid).children().eq(8).text(obj.checkid)
-                 $.getContent()
+                 
              },
          });
          return false;
      })
 
 $("#add_form").submit(function () {
-    if (userinfo.level!=true) {
-        $("#tip").attr("class","alert alert-warning")
-        $("#tip").removeAttr("hidden")
-        $('#addbz').modal('hide')
-        $("#tip_c").text("权限不足，请联系管理员！")
-        $('#editpatient').modal('hide')
-        setTimeout(function(){$("#tip").attr("hidden","")},5000);
-        return false;
-    }
+    // if (userinfo.level!=true) {
+    //     $("#tip").attr("class","alert alert-warning")
+    //     $("#tip").removeAttr("hidden")
+    //     $('#addbz').modal('hide')
+    //     $("#tip_c").text("权限不足，请联系管理员！")
+    //     $('#editpatient').modal('hide')
+    //     setTimeout(function(){$("#tip").attr("hidden","")},5000);
+    //     return false;
+    // }
          $.ajax({
              url:'/'+type+'_add/',
              type:'POST',
@@ -132,13 +153,14 @@ $("#add_form").submit(function () {
                  $('#addbz').modal('hide')
                  $("#tip_c").text(data.tip)
                  $.getContent()
+                 setTimeout(function(){$("#tip").attr("hidden","")},5000);
              },
          });
          return false;
      })
 
-$.delbz = function (pid) {
-    if (userinfo.level!=true) {
+$.delbz = function (pid,pn) {
+    if (userinfo.level<1 && userinfo.name!=pn) {
         $("#tip").attr("class","alert alert-warning")
         $("#tip").removeAttr("hidden")
         $("#tip_c").text("权限不足，请联系管理员！")
@@ -188,7 +210,7 @@ $.delbz = function (pid) {
                         <td style="text-align: center;">\
             <a class="btn btn-info" href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
             &nbsp;\
-            <a class="btn btn-danger" href="javascript:$.delbz('+pa[0]+')">删除</a>\
+            <a class="btn btn-danger" href="javascript:$.delbz('+pa[0]+",'"+pa[3]+'\')">删除</a>\
         </td>\
                         <td>'+pa[0]+'</td>\
                         <td>'+pa[1]+'</td>\

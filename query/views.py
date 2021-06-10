@@ -118,6 +118,9 @@ def getuser(request):
         user = models.User.objects.get(userid=userid)
         hos = models.HospitalRecord.objects.get(instituteid=user.hospitalid).institutename
         level = request.user.is_staff
+        supers = request.user.is_superuser
+        if supers==1:
+            level = 2
 
         data = {'id':user.userid,"name":user.username,"age":user.age,"gender":user.gender,"hos":hos,"dep":user.departmentid,"level":level}
         return HttpResponse(json.dumps(data))
@@ -198,9 +201,11 @@ def get_detail(request):
     if request.method=='POST':
         pid = request.POST.get("pid")
         bz = models.DLabeledimage.objects.get(id=pid)
+        da = [i.diseaseid for i in models.DArearoi.objects.filter(areaid=bz.areaid)]
+        datype = ','.join([i.diseasename for i in models.Diseasedict.objects.filter(diseaseid__in=da)])
         ppid = models.Patientbasicinfos.objects.get(patientid=bz.patientid).id
         doctor = models.User.objects.get(userid=bz.userid).username
-        data = {"bzid":pid,"name":ppid,"areaid":bz.areaid,"imageid":bz.imageid,"bztype":bz.pathtype,"doctor":doctor}
+        data = {"type":datype,"name":ppid,"areaid":bz.areaid,"imageid":bz.imageid,"bztype":bz.pathtype,"doctor":doctor}
         return HttpResponse(json.dumps(data))
 
 @csrf_exempt
@@ -209,9 +214,11 @@ def get_adetail(request):
     if request.method=='POST':
         pid = request.POST.get("pid")
         bz = models.ALabeledimage.objects.get(id=pid)
+        da = [i.anatomyid for i in models.AArearoi.objects.filter(areaid=bz.areaid)]
+        datype = ','.join([i.anatomyname for i in models.Anatomydict.objects.filter(anatomyid__in=da)])
         ppid = models.Patientbasicinfos.objects.get(patientid=bz.patientid).id
         doctor = models.User.objects.get(userid=bz.userid).username
-        data = {"bzid":pid,"name":ppid,"areaid":bz.areaid,"imageid":bz.imageid,"bztype":bz.pathtype,"doctor":doctor}
+        data = {"type":datype,"name":ppid,"areaid":bz.areaid,"imageid":bz.imageid,"bztype":bz.pathtype,"doctor":doctor}
         return HttpResponse(json.dumps(data))
 
 @csrf_exempt
@@ -387,52 +394,54 @@ def detail_add(request):
         areaid = obj.get("areaid")
         bztype = obj.get("bztype")
         imgid = obj.get("imageid")
-        id = obj.get("bzid")
+        datype = obj.get("type").split(",")
 
         meth = request.GET.get('me', '')
-        if meth=='':
-            if id.strip():
-                state = models.DLabeledimage.objects.filter(id__exact=id)
-                if len(state)!=0:
-                    data = {"tip":"标注id重复！","class":"danger"}
-                    return HttpResponse(json.dumps(data))
         
         doctorid = models.User.objects.filter(username=doctor)
         if len(doctorid)==0:
-                data = {"tip":"医生未涵盖！","class":"danger"}
-                return HttpResponse(json.dumps(data))
+            data = {"tip":"医生未涵盖！","class":"danger"}
+            return HttpResponse(json.dumps(data))
         doctorid = doctorid[0].userid
 
         pid = models.Patientbasicinfos.objects.filter(id=name)
         if len(pid)==0:
-                data = {"tip":"患者未涵盖！","class":"danger"}
-                return HttpResponse(json.dumps(data))
+            data = {"tip":"患者未涵盖！","class":"danger"}
+            return HttpResponse(json.dumps(data))
         pid = pid[0].patientid
 
-        areaid = models.DArearoi.objects.filter(areaid=areaid)
-        if len(areaid)==0:
-                data = {"tip":"区域未涵盖！","class":"danger"}
+        if meth=='':
+            area = models.DArearoi.objects.filter(areaid=areaid)
+            if len(area)!=0:
+                data = {"tip":"区域编号重复！","class":"danger"}
                 return HttpResponse(json.dumps(data))
-        areaid = areaid[0].areaid
+        else:
+            models.DArearoi.objects.filter(areaid=areaid).delete()
+
+        try:
+            area = [models.Diseasedict.objects.get(diseasename=i).diseaseid for i in datype]
+        except:
+            data = {"tip":"疾病未涵盖！","class":"danger"}
+            return HttpResponse(json.dumps(data))
+        for i in area:
+            models.DArearoi.objects.create(areaid=areaid,diseaseid=i)
 
         img = models.Imagepath.objects.filter(imageid=imgid)
         if len(img)==0:
-                data = {"tip":"图像未涵盖！","class":"danger"}
-                return HttpResponse(json.dumps(data))
+            data = {"tip":"图像未涵盖！","class":"danger"}
+            return HttpResponse(json.dumps(data))
         img = imgid
 
         if meth=='':
             try:
-                if id.strip():
-                    models.DLabeledimage.objects.create(id=id,areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-                else:
-                    models.DLabeledimage.objects.create(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-                data = {"tip":f"成功添加疾病标注{id}！","class":"success"}
+                models.DLabeledimage.objects.create(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
+                data = {"tip":f"成功添加疾病标注{areaid}！","class":"success"}
             except:
                 data = {"tip":"添加失败，请重试！","class":"danger"}
         else:
-            models.DLabeledimage.objects.filter(id=id).update(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-            data = {"tip":f"成功更新疾病标注{id}的信息！","class":"success","pid":id,"obj":obj}
+            bz = models.DLabeledimage.objects.filter(areaid=areaid)
+            bz.update(userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
+            data = {"tip":f"成功更新疾病标注{areaid}的信息！","class":"success","pid":bz[0].id,"obj":obj}
         
         return HttpResponse(json.dumps(data))
 
@@ -445,15 +454,9 @@ def adetail_add(request):
         areaid = obj.get("areaid")
         bztype = obj.get("bztype")
         imgid = obj.get("imageid")
-        id = obj.get("bzid")
+        datype = obj.get("type").split(",")
 
         meth = request.GET.get('me', '')
-        if meth=='':
-            if id.strip():
-                state = models.ALabeledimage.objects.filter(id__exact=id)
-                if len(state)!=0:
-                    data = {"tip":"标注id重复！","class":"danger"}
-                    return HttpResponse(json.dumps(data))
         
         doctorid = models.User.objects.filter(username=doctor)
         if len(doctorid)==0:
@@ -467,11 +470,21 @@ def adetail_add(request):
                 return HttpResponse(json.dumps(data))
         pid = pid[0].patientid
 
-        areaid = models.AArearoi.objects.filter(areaid=areaid)
-        if len(areaid)==0:
-                data = {"tip":"区域未涵盖！","class":"danger"}
-                return HttpResponse(json.dumps(data))
-        areaid = areaid[0].areaid
+        if meth=="":
+            area = models.AArearoi.objects.filter(areaid=areaid)
+            if len(area)!=0:
+                    data = {"tip":"区域编号重复！","class":"danger"}
+                    return HttpResponse(json.dumps(data))
+        else:
+            models.AArearoi.objects.filter(areaid=areaid).delete()
+
+        try:
+            area = [models.Anatomydict.objects.get(anatomyname=i).anatomyid for i in datype]
+        except:
+            data = {"tip":"解剖未涵盖！","class":"danger"}
+            return HttpResponse(json.dumps(data))
+        for i in area:
+            models.AArearoi.objects.create(areaid=areaid,anatomyid=i)
 
         img = models.Imagepath.objects.filter(imageid=imgid)
         if len(img)==0:
@@ -481,16 +494,14 @@ def adetail_add(request):
 
         if meth=='':
             try:
-                if id.strip():
-                    models.ALabeledimage.objects.create(id=id,areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-                else:
-                    models.ALabeledimage.objects.create(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-                data = {"tip":f"成功添加解剖标注{id}！","class":"success"}
+                models.ALabeledimage.objects.create(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
+                data = {"tip":f"成功添加解剖标注{areaid}！","class":"success"}
             except:
                 data = {"tip":"添加失败，请重试！","class":"danger"}
         else:
-            models.ALabeledimage.objects.filter(id=id).update(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
-            data = {"tip":f"成功更新解剖标注{id}的信息！","class":"success","pid":id,"obj":obj}
+            bz = models.ALabeledimage.objects.filter(areaid=areaid)
+            bz.update(areaid=areaid,userid=doctorid,pathtype=bztype,imageid=img,patientid=pid)
+            data = {"tip":f"成功更新解剖标注{areaid}的信息！","class":"success","pid":bz[0].id,"obj":obj}
         
         return HttpResponse(json.dumps(data))
 
