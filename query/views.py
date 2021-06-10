@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from . import models
+from django.db.models import *
 import json
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect, request
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from django.contrib.auth import login,authenticate,logout
@@ -63,6 +64,40 @@ def index(request):
 def logout_d(request):
     logout(request)
     return HttpResponseRedirect("/")
+
+@login_required
+@csrf_exempt
+def chart(request):
+    if request.method == "GET":
+        return render(request,"query/chart.html")
+
+@login_required
+@csrf_exempt
+def get_chart(request):
+    if request.method == "POST":
+        agey = models.Patientbasicinfos.objects.values("age").annotate(Count=Count('age')).order_by("age")
+        aa = {i["age"]:i["Count"] for i in agey}
+        xd = [i for i in range(agey.last()['age'])]
+        yd = [0]
+        for i in xd:
+            if i in aa.keys():
+                yd.append(aa[i])
+            else:
+                yd.append(0)
+        yd[1]=0
+        age = {"xdata":xd,"ydata":yd}
+
+        sexy = [i['Count'] for i in models.Patientbasicinfos.objects.values("gender").annotate(Count=Count('gender')).order_by("gender")]
+        sex = {"xdata":["女性","男性"],"ydata":sexy}   
+
+        disy = models.DArearoi.objects.values("diseaseid").annotate(Count=Count('diseaseid')).order_by("diseaseid")
+        dis = [{'name':models.Diseasedict.objects.get(diseaseid=i['diseaseid']).diseasename,"value":i['Count']} for i in disy]  
+
+        areay = models.AArearoi.objects.values("anatomyid").annotate(Count=Count('anatomyid')).order_by("anatomyid")
+        area = [{"name":models.Anatomydict.objects.get(anatomyid=i['anatomyid']).anatomyname,"value":i['Count']} for i in areay]
+        
+        data = {"age":age,"sex":sex,"dis":dis,"area":area}
+        return HttpResponse(json.dumps(data))
 
 @csrf_exempt
 def getinfo(request):
