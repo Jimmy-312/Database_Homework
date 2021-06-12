@@ -42,4 +42,7 @@ urlpatterns = [
     path('get_info/',getinfo),
     path('chart/',chart),
     path('get_chart/',get_chart),
+    path("get_users/",get_users),
+    path("l_change/",ex_level),
+    path("delu/",delu),
 ]

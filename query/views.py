@@ -112,6 +112,72 @@ def getinfo(request):
 
 @csrf_exempt
 @login_required
+def get_users(request):
+    if request.method == "POST":
+        ousers = models.User.objects.all()
+        users = []
+        for i in ousers:
+            hos = models.HospitalRecord.objects.get(instituteid=i.hospitalid).institutename
+            info = models.AuthUser.objects.get(username=i.userid)
+            level = "站长" if info.is_superuser==1 else "管理员" if info.is_staff==1 else "普通用户"
+            users.append({"id":i.userid,"name":i.username,"level":level,"age":i.age,"sex":i.gender,"dep":i.departmentid,"hos":hos})
+        
+        data = {"users":users}
+        return HttpResponse(json.dumps(data))
+
+@csrf_exempt
+@login_required
+def delu(request):
+    if request.method == "POST":
+        pid = request.POST.get("id")
+
+        models.User.objects.filter(userid=pid).delete()
+        models.AuthUser.objects.filter(username=pid).delete()
+        data = {"class":"success"}
+
+        return HttpResponse(json.dumps(data))
+
+@csrf_exempt
+@login_required
+def ex_level(request):
+    if request.method == "POST":
+        p = int(request.POST.get("p"))
+        pid = request.POST.get("id")
+
+        info = models.AuthUser.objects.get(username=pid)
+        if info.is_superuser==1:
+            if p==-1:
+                isu = 0
+                st = p
+            else:
+                isu = 1
+                st = 0
+            ist = info.is_staff
+        elif info.is_staff==1:
+            if p==-1:
+                isu = 0
+                ist = 0
+            else:
+                isu = 1
+                ist = 1
+            st = p
+        else:
+            isu = 0
+            if p==1:
+                ist = 1
+                st = p
+            else:
+                ist = 0
+                st = 0
+
+        models.AuthUser.objects.filter(username=pid).update(is_staff=ist,is_superuser=isu)
+        #print(isu,ist,st)
+        data = {"state":st}
+        return HttpResponse(json.dumps(data)) 
+
+
+@csrf_exempt
+@login_required
 def getuser(request):
     if request.method == "POST":
         userid = request.user

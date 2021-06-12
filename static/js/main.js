@@ -16,13 +16,22 @@ $.getUser = function () {
             $("#info_hos").text(userinfo.hos)
             $("#info_dep").text(userinfo.dep)
             $("#topname").text(userinfo.name + ",欢迎您")
-            if (userinfo.level) {
+            if (userinfo.level==1) {
                 $("#user_level").attr("class", "label label-primary")
                 $("#user_level").text("管理员")
+            }
+            if (userinfo.level==2) {
+                $("#user_level").attr("class", "label label-warning")
+                $("#user_level").text("站长")
             }
             
         }
     })    
+}
+var tou = 0;
+$.changetou = function () {
+    tou = (tou + 1) % 5 
+    $("#tou").attr("src","/static/img/"+tou+".jpg")
 }
 $.getUser()
 $.getHospital = function () {
@@ -42,6 +51,73 @@ $.getHospital = function () {
     })
 }
 $.getHospital();
+$.getUsers = function () {
+    $.ajax({
+        url: "/get_users/",
+        type: "POST",
+        success:function (data) {
+            data = JSON.parse(data)
+            var users = data.users
+            $("#retable").html("")
+            for (var i = 0; i < users.length; i++){
+                u=users[i]
+                var st="<tr style='height:36px' id='"+u.id+"'>\
+                <td style='width:80px'>"+ u.name +"</td>\
+                <td style='width:90px'>"+ u.level +"</td>\
+                <td style='width:43px'>"+ u.sex +"</td>\
+                <td style='width:43px'>"+ u.age +"</td>\
+                <td style='width:255px'>"+ u.hos +"</td>\
+                <td style='width:76px'>"+ u.dep +"</td>\
+                <td style='width:160px'>"
+                if (userinfo.level == 1) {
+                    if (u.level == "普通用户") {
+                        st += "<a href=\'javascript:$.lchange(\"" + u.id + "\",\"1\",\"" + u.level + "\")\'> 升级 </a>"
+                    }
+                    else {
+                        st +="<a style='color:black;'>无权限</a>"
+                    }
+                }
+                if (userinfo.level == 2) {
+                    st += "<a href=\'javascript:$.lchange(\"" + u.id + "\",\"1\",\"" + u.level + "\")\'> 升级 </a>"
+                    st += "<a href=\'javascript:$.lchange(\"" + u.id + "\",\"-1\",\"" + u.level + "\")\'> 降级 </a>"
+                    st += "<a href=\'javascript:$.delu(\"" + u.id + "\")\'> 删除 </a>"
+                }
+                if (userinfo.level == 0) {
+                    st +="<a style='color:black;'>无权限</a>"
+                }
+                st+="</td >\
+            </tr>"
+                $("#retable").append(st)
+            }
+            //$("#ttitle").attr("style","background-color: lightgrey;position: fixed;height: 36px;")
+        }
+    })
+}
+$.delu = function (pid) {
+    $.ajax({
+        url: "/delu/",
+        type: "POST",
+        data: {"id":pid},
+        success:function (data) {
+            data = JSON.parse(data)
+            $.getUsers()
+            $.getUser()
+        }
+    })    
+}
+$.lchange = function (pid,p,ty) {
+    $.ajax({
+        url: "/l_change/",
+        type: "POST",
+        data: { "p": p ,"id":pid},
+        success:function (data) {
+            data = JSON.parse(data)
+            $.getUsers()
+            $.getUser()
+        }
+    })    
+}
+$.getUsers()
 $.edituser = function () {
     $(".edit").attr("type", "text")
     $("#edit_sex").attr("style", "height: 30px;width: 150px;")
