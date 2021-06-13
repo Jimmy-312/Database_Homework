@@ -6,7 +6,7 @@ $.getUser = function () {
     $.ajax({
         url: "/getUser/",
         method: "POST",
-        async:true,
+        async:false,
         success: function (data) {
             data = JSON.parse(data)
             userinfo = data            
@@ -18,19 +18,19 @@ $.getDoc = function () {
     $.ajax({
         url:'/get_doc/',
         type:'POST',
-        async:true,
+        async:false,
         success: function(data){
             data = JSON.parse(data)
             var st=''
             for (var i = 0; i < data.length; i++){
                 st = st + '<option>' + data[i] + '</option>\n'
             }
-            console.log(userinfo)
             if (userinfo.level < 1) {
                 st1 = '<option>' + userinfo.name + '</option>'
             } else {
                 st1=st
             }
+            console.log(userinfo.level)
             $(".doctorq").append(st)
             $(".doctor").append(st1)
         },

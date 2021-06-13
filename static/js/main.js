@@ -6,7 +6,7 @@ $.getUser = function () {
     $.ajax({
         url: "/getUser/",
         method: "POST",
-        async:true,
+        async:false,
         success: function (data) {
             data = JSON.parse(data)
             userinfo = data
