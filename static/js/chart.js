@@ -29,7 +29,7 @@ $.areachart = function (d) {
         },
         tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            formatter: '{a} <br/>{b} : {c} ({d}%)',
         },
         color: colors,
         series: [
@@ -136,6 +136,7 @@ $.agechart = function (d) {
             data: d.xdata
         },
         yAxis: {},
+        dataZoom: [{type: 'inside'}],
         series: [{
             name: '患者数量',
             type: 'line',
