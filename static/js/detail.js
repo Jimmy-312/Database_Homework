@@ -207,11 +207,16 @@ $.delbz = function (pid,pn) {
                      }
                      var pa=data.data[i]
                     st+='<tr class="contentcol page'+page+'" id="'+pa[0]+'" hidden>\
-                        <td style="text-align: center;">\
-            <a class="btn btn-info" href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
-            &nbsp;\
-            <a class="btn btn-danger" href="javascript:$.delbz('+pa[0]+",'"+pa[3]+'\')">删除</a>\
-        </td>\
+                    <td style="width:200px">\
+                <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:120px;margin:0 auto;">\
+                    <div class="btn-group" role="group">\
+                        <a class="btn btn-info" href="javascript:$('+"'#editbz'"+').modal('+"'show'"+');$.getbz('+pa[0]+')">编辑</a>\
+                    </div>\
+                    <div class="btn-group" role="group">\
+                    <a class="btn btn-danger" href="javascript:$.delbz('+pa[0]+",'"+pa[3]+'\')">删除</a>\
+                    </div>\
+                </div>\
+                </td>\
                         <td>'+pa[0]+'</td>\
                         <td>'+pa[1]+'</td>\
                         <td>'+pa[2]+'</td>\
