@@ -67,9 +67,9 @@
 
 <div class="container-fluid">
     <div class="jumbotron" style="background-image:url(/static/img/head.jpg);width: 95%;margin:0 auto;margin-top: 10px;">
-        <h1>救救我！SOS！</h1>
-        <p>速来！！！</p>
-        <p><a class="btn btn-primary btn-lg" href="javascript:$('#zfb').modal('show')" role="button">了解更多</a></p>
+        <h1>Z-MedicalSys</h1>
+        <p>你的下一个医生何必是医生，全新世代的医疗系统现已全面上市</p>
+        <p style="margin-bottom: -5px;"><a class="btn btn-primary btn-lg" href="javascript:$('#zfb').modal('show')" role="button">了解更多</a></p>
     </div>
     <div style="margin-top: 70px;">
     <div class="col-md-5" >
@@ -128,8 +128,12 @@
                 <div style="text-align: center;">
                     <button type="submit" id="edit_p" style="display: none;" class="btn btn-primary">更新个人信息</button>
                 </form> 
-                    <button type="button" id="edit_s" class="btn btn-info" onclick="$.edituser()">修改个人信息</button>
-                    <button type="button" id="edit_pass" class="btn btn-default" style="margin-left: 10px;" data-toggle="modal" data-target="#editpass">修改密码</button>
+                    <button type="button" id="edit_s" class="btn btn-info" onclick="$.edituser()">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑信息
+                    </button>
+                    <button type="button" id="edit_pass" class="btn btn-default" style="margin-left: 10px;" data-toggle="modal" data-target="#editpass">
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> 修改密码
+                    </button>
                 </div>
             </div>
         </div>

@@ -185,9 +185,13 @@
     </div>
 </div>
 <div style="text-align: center;margin-top: 25px;">
-<input class="btn btn-primary" id="bquery" type="submit" value="查询">
+<button class="btn btn-primary" id="bquery" type="submit">
+    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+</button>
 </form>   
-<button class="btn btn-default" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">新增</button>
+<button class="btn btn-info" style="margin-left: 20px;" data-toggle="modal" data-target="#addpatient">
+    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 新增
+</button>
 </div> 
 </div> 
 {% if error %}

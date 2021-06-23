@@ -84,11 +84,11 @@ $.nextpage = function(num){
 
 $("#add_form").submit(function () {
     //console.log(userinfo.level)
-    if (userinfo.level!=true) {
+    if (userinfo.level<1) {
         $("#tip").attr("class","alert alert-warning")
         $("#tip").removeAttr("hidden")
-        $('#addpatient').modal('hide')
         $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
         setTimeout(function(){$("#tip").attr("hidden","")},5000);
         return false;
     }
@@ -114,10 +114,9 @@ $("#add_form").submit(function () {
 
 $("#edit_form").submit(function () {
     //console.log(userinfo)
-    if (userinfo.level!=true) {
+    if (userinfo.level<1) {
         $("#tip").attr("class","alert alert-warning")
         $("#tip").removeAttr("hidden")
-        $('#editpatient').modal('hide')
         $("#tip_c").text("权限不足，请联系管理员！")
         $('#editpatient').modal('hide')
         setTimeout(function(){$("#tip").attr("hidden","")},5000);
@@ -173,11 +172,11 @@ $("#edit_form").submit(function () {
  };
 
 $.delpa = function (pid) {
-    if (userinfo.level!=true) {
+    if (userinfo.level<1) {
         $("#tip").attr("class","alert alert-warning")
         $("#tip").removeAttr("hidden")
-        $('#addpatient').modal('hide')
         $("#tip_c").text("权限不足，请联系管理员！")
+        $('#editpatient').modal('hide')
         setTimeout(function(){$("#tip").attr("hidden","")},5000);
         return false;
     }
@@ -223,10 +222,15 @@ $("#query").submit($.getContent = function () {
                  }
                  var pa=data.patient_id[i]
              st=st+'<tr class="contentcol page'+page+'" id="row'+pa[0]+'" hidden>\
-    <td style="text-align: center;">\
-        <a class="btn btn-info" href="javascript:$('+"'#editpatient'"+').modal('+"'show'"+');$.getPatient('+pa[0]+')">编辑</a>\
-        &nbsp;\
-        <a class="btn btn-danger" href="javascript:$.delpa('+pa[0]+')">删除</a>\
+                <td style="width:200px">\
+                <div class="btn-group btn-group-justified" role="group" aria-label="..." style="width:120px;margin:0 auto;">\
+                    <div class="btn-group" role="group">\
+                        <a class="btn btn-info" href="javascript:$('+"'#editpatient'"+').modal('+"'show'"+');$.getPatient('+pa[0]+')">编辑</a>\
+                    </div>\
+                    <div class="btn-group" role="group">\
+                        <a class="btn btn-danger" href="javascript:$.delpa('+pa[0]+')">删除</a>\
+                    </div>\
+            </div>\
     </td>\
     <td>'+pa[0]+'</td>\
     <td>'+pa[1]+'</td>\
